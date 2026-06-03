@@ -7,7 +7,7 @@
       "name": "Apache License 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0"
     },
-    "version": "0.7.1"
+    "version": "0.7.2"
   },
   "servers": [
     {
@@ -4322,6 +4322,178 @@
         }
       }
     },
+    "/data-connectors/{id}/sync": {
+      "post": {
+        "tags": ["Data Connectors"],
+        "summary": "Sync a data connector URI into a file",
+        "operationId": "syncDataConnectorFile",
+        "description": "Materialize a connector URI (e.g. `grain://recording/<id>`) into a Cloudglue file without starting a downstream job. Idempotent: syncing the same URI returns the existing file. For Grain, the file's `source_metadata` is populated from the recording.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The ID of the data connector",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "url": {
+                    "type": "string",
+                    "description": "Connector URI to sync. Must match the connector's type.",
+                    "example": "grain://recording/abc123"
+                  }
+                },
+                "required": ["url"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The synced file",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/File"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (e.g. URL source does not match the connector type)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Data connector not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "An unexpected error occurred on the server",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Error communicating with the external service",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/data-connectors/{id}/source-metadata": {
+      "get": {
+        "tags": ["Data Connectors"],
+        "summary": "Look up source metadata for a connector URI",
+        "operationId": "getDataConnectorSourceMetadata",
+        "description": "Fetch source metadata for a connector URI directly from the upstream source, without creating a Cloudglue file. Currently supported for Grain; other connector types return 501.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "The ID of the data connector",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "url",
+            "in": "query",
+            "description": "Connector URI to look up. Must match the connector's type.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "grain://recording/abc123"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Source metadata for the URI",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SourceMetadataResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (e.g. URL source does not match the connector type)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Data connector not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "501": {
+            "description": "Source metadata lookup is not implemented for this connector type",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "Error communicating with the external service",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/webhooks": {
       "get": {
         "tags": ["Webhooks"],
@@ -5882,7 +6054,7 @@
         "tags": ["Segments"],
         "summary": "Create a new segmentation job",
         "operationId": "createSegments",
-        "description": "Create intelligent segments for video or audio files based on shot detection or narrative analysis.\n\n**Audio File Support:**\n\n- Audio files support **narrative** criteria only (shot detection is not available for audio).\n- Audio files default to the 'balanced' strategy and may opt into 'transcript'.\n\n**Note: YouTube URLs and audio files are supported for narrative-based segmentation only.** Shot-based segmentation requires direct video file access. Use Cloudglue Files, HTTP URLs, or files from data connectors for shot-based segmentation.\n\n**Narrative Segmentation Strategies:**\n\n- **comprehensive** (default for non-YouTube/non-audio files): Uses a VLM to deeply analyze logical segments of video. Only available for video files (not YouTube or audio).\n- **balanced** (default for YouTube videos and audio files): Balanced analysis approach using multiple modalities. Supports YouTube URLs and audio files.\n- **transcript**: Cheap and fast speech-transcript-based segmentation. Requires a transcript and returns an error when none is available — use `balanced` for silent or visual-only content (or `comprehensive` for non-YouTube/non-audio video files).\n\n**YouTube URLs and Audio Files**: Only the 'balanced' and 'transcript' strategies are accepted. 'comprehensive' will be rejected with an error.\n\n**Chapter Count Parameters:**\n\n- **number_of_chapters**: Target number of chapters. If only this is provided, min_chapters and max_chapters are calculated automatically.\n- **min_chapters**: Minimum number of chapters. If provided with number_of_chapters and max, validates min is less than or equal to number_of_chapters which is less than or equal to max.\n- **max_chapters**: Maximum number of chapters. If provided with number_of_chapters and min, validates min is less than or equal to number_of_chapters which is less than or equal to max.\n- If none are provided, chapter counts are calculated automatically based on file duration.",
+        "description": "Create intelligent segments for video or audio files based on shot detection or narrative analysis.\n\n**Audio File Support:**\n\n- Audio files support **narrative** criteria only (shot detection is not available for audio).\n- Audio files default to the 'balanced' strategy and may opt into 'transcript'.\n\n**Note: YouTube URLs and audio files are supported for narrative-based segmentation only.** Shot-based segmentation requires direct video file access. Use Cloudglue Files, HTTP URLs, or files from data connectors for shot-based segmentation.\n\n**Narrative Segmentation Strategies:**\n\n- **comprehensive** (default for non-YouTube/non-audio files): Uses a VLM to deeply analyze logical segments of video. Only available for video files (not YouTube or audio).\n- **balanced** (default for YouTube videos and audio files): Balanced analysis approach using multiple modalities. Supports YouTube URLs and audio files.\n- **transcript**: Cheap and fast speech-transcript-based segmentation. Requires a transcript and returns an error when none is available \u2014 use `balanced` for silent or visual-only content (or `comprehensive` for non-YouTube/non-audio video files).\n\n**YouTube URLs and Audio Files**: Only the 'balanced' and 'transcript' strategies are accepted. 'comprehensive' will be rejected with an error.\n\n**Chapter Count Parameters:**\n\n- **number_of_chapters**: Target number of chapters. If only this is provided, min_chapters and max_chapters are calculated automatically.\n- **min_chapters**: Minimum number of chapters. If provided with number_of_chapters and max, validates min is less than or equal to number_of_chapters which is less than or equal to max.\n- **max_chapters**: Maximum number of chapters. If provided with number_of_chapters and min, validates min is less than or equal to number_of_chapters which is less than or equal to max.\n- If none are provided, chapter counts are calculated automatically based on file duration.",
         "requestBody": {
           "description": "Segmentation job parameters",
           "content": {
@@ -7399,7 +7571,7 @@
       },
       "KnowledgeBaseCollections": {
         "type": "object",
-        "description": "Search within specific collections. This is the default source mode and is backward-compatible — the `source` field can be omitted.",
+        "description": "Search within specific collections. This is the default source mode and is backward-compatible \u2014 the `source` field can be omitted.",
         "required": ["collections"],
         "properties": {
           "source": {
@@ -8129,7 +8301,7 @@
             "type": "object",
             "properties": {
               "url": {
-                "description": "Input video URL. Supports URIs of files uploaded to Cloudglue Files endpoint, public YouTube video URLs, public TikTok video URLs, public Loom share URLs, public HTTP URLs, and files which have been granted access to Cloudglue via data connectors.\n\nNote that YouTube videos are currently limited to speech level understanding only. Public TikTok video URLs will be scraped and stored automatically — subject to charges. For files via our Data connectors, see our documentation on data connectors for setup information.",
+                "description": "Input video URL. Supports URIs of files uploaded to Cloudglue Files endpoint, public YouTube video URLs, public TikTok video URLs, public Loom share URLs, public HTTP URLs, and files which have been granted access to Cloudglue via data connectors.\n\nNote that YouTube videos are currently limited to speech level understanding only. Public TikTok video URLs will be scraped and stored automatically \u2014 subject to charges. For files via our Data connectors, see our documentation on data connectors for setup information.",
                 "type": "string"
               },
               "prompt": {
@@ -8316,6 +8488,15 @@
               "loom"
             ],
             "description": "Source of the file"
+          },
+          "source_metadata": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SourceMetadata"
+              }
+            ],
+            "nullable": true,
+            "description": "Source provenance captured from the upstream connector at ingest time. Null when nothing was captured (older files, or a connector that does not yet populate it)."
           }
         },
         "required": ["id", "uri", "status"]
@@ -8808,7 +8989,7 @@
                 "properties": {
                   "url": {
                     "type": "string",
-                    "description": "The URL of the video to add to the collection. Supports URIs of files uploaded to Cloudglue Files endpoint, public YouTube video URLs, public TikTok video URLs, public Loom share URLs, public HTTP URLs, and files which have been granted access to Cloudglue via data connectors.\n\nNote that YouTube videos are currently limited to speech level understanding only. Public TikTok video URLs will be scraped and stored automatically — subject to charges. For files via our Data connectors, see our documentation on data connectors for setup information."
+                    "description": "The URL of the video to add to the collection. Supports URIs of files uploaded to Cloudglue Files endpoint, public YouTube video URLs, public TikTok video URLs, public Loom share URLs, public HTTP URLs, and files which have been granted access to Cloudglue via data connectors.\n\nNote that YouTube videos are currently limited to speech level understanding only. Public TikTok video URLs will be scraped and stored automatically \u2014 subject to charges. For files via our Data connectors, see our documentation on data connectors for setup information."
                   }
                 },
                 "required": ["url"]
@@ -9616,7 +9797,7 @@
             "required": ["url"],
             "properties": {
               "url": {
-                "description": "Input video URL. Supports URIs of files uploaded to Cloudglue Files endpoint, public YouTube video URLs, public TikTok video URLs, public Loom share URLs, public HTTP URLs, and files which have been granted access to Cloudglue via data connectors.\n\nNote that YouTube videos are currently limited to speech level understanding only. Public TikTok video URLs will be scraped and stored automatically — subject to charges. For files via our Data connectors, see our documentation on data connectors for setup information.",
+                "description": "Input video URL. Supports URIs of files uploaded to Cloudglue Files endpoint, public YouTube video URLs, public TikTok video URLs, public Loom share URLs, public HTTP URLs, and files which have been granted access to Cloudglue via data connectors.\n\nNote that YouTube videos are currently limited to speech level understanding only. Public TikTok video URLs will be scraped and stored automatically \u2014 subject to charges. For files via our Data connectors, see our documentation on data connectors for setup information.",
                 "type": "string"
               },
               "enable_summary": {
@@ -9930,7 +10111,7 @@
             "required": ["url"],
             "properties": {
               "url": {
-                "description": "Input video URL. Supports URIs of files uploaded to Cloudglue Files endpoint, public YouTube video URLs, public TikTok video URLs, public Loom share URLs, public HTTP URLs, and files which have been granted access to Cloudglue via data connectors.\n\nNote that YouTube videos are currently limited to speech level understanding only. Public TikTok video URLs will be scraped and stored automatically — subject to charges. For files via our Data connectors, see our documentation on data connectors for setup information.",
+                "description": "Input video URL. Supports URIs of files uploaded to Cloudglue Files endpoint, public YouTube video URLs, public TikTok video URLs, public Loom share URLs, public HTTP URLs, and files which have been granted access to Cloudglue via data connectors.\n\nNote that YouTube videos are currently limited to speech level understanding only. Public TikTok video URLs will be scraped and stored automatically \u2014 subject to charges. For files via our Data connectors, see our documentation on data connectors for setup information.",
                 "type": "string"
               },
               "enable_summary": {
@@ -12348,7 +12529,7 @@
         "properties": {
           "url": {
             "type": "string",
-            "description": "Input video or audio file URL. Supports URIs of files uploaded to Cloudglue Files endpoint, public HTTP URLs, YouTube URLs (narrative criteria only), public TikTok video URLs, public Loom share URLs, and files which have been granted access to Cloudglue via data connectors.\n\n**\u26a0\ufe0f Important: YouTube URLs and audio files are ONLY supported for narrative-based segmentation.** Shot-based segmentation requires direct video file access and does not support YouTube URLs or audio files. For YouTube URLs and audio files with narrative segmentation, only the 'balanced' and 'transcript' strategies are accepted; the 'comprehensive' strategy will be rejected with an error. Public TikTok video URLs will be scraped and stored automatically — subject to charges. For files via our Data connectors, see our documentation on data connectors for setup information."
+            "description": "Input video or audio file URL. Supports URIs of files uploaded to Cloudglue Files endpoint, public HTTP URLs, YouTube URLs (narrative criteria only), public TikTok video URLs, public Loom share URLs, and files which have been granted access to Cloudglue via data connectors.\n\n**\u26a0\ufe0f Important: YouTube URLs and audio files are ONLY supported for narrative-based segmentation.** Shot-based segmentation requires direct video file access and does not support YouTube URLs or audio files. For YouTube URLs and audio files with narrative segmentation, only the 'balanced' and 'transcript' strategies are accepted; the 'comprehensive' strategy will be rejected with an error. Public TikTok video URLs will be scraped and stored automatically \u2014 subject to charges. For files via our Data connectors, see our documentation on data connectors for setup information."
           },
           "criteria": {
             "type": "string",
@@ -14003,6 +14184,264 @@
             "description": "Indicates successful deletion"
           }
         }
+      },
+      "GrainSourceMetadata": {
+        "type": "object",
+        "description": "Source provenance captured from Grain at ingest time. The richer AI/contextual fields are only present when Grain returns them.",
+        "properties": {
+          "source_type": {
+            "type": "string",
+            "enum": ["grain"],
+            "description": "Discriminator identifying the upstream connector."
+          },
+          "grain_recording_id": {
+            "type": "string",
+            "description": "Grain's recording id."
+          },
+          "title": {
+            "type": "string",
+            "description": "Recording title."
+          },
+          "start_datetime": {
+            "type": "string",
+            "format": "date-time",
+            "description": "UTC time Grain started the recording."
+          },
+          "end_datetime": {
+            "type": "string",
+            "format": "date-time",
+            "description": "UTC time the recording ended."
+          },
+          "duration_ms": {
+            "type": "integer",
+            "description": "Recording duration in milliseconds."
+          },
+          "media_type": {
+            "type": "string",
+            "enum": ["audio", "transcript", "video"],
+            "description": "Grain media type of the recording."
+          },
+          "upstream_source": {
+            "type": "string",
+            "enum": [
+              "aircall",
+              "local_capture",
+              "meet",
+              "teams",
+              "upload",
+              "webex",
+              "zoom",
+              "other"
+            ],
+            "description": "Platform Grain captured the recording from."
+          },
+          "grain_url": {
+            "type": "string",
+            "description": "URL to the recording in Grain."
+          },
+          "thumbnail_url": {
+            "type": "string",
+            "nullable": true,
+            "description": "Thumbnail URL, null if none."
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Tags applied to the recording."
+          },
+          "teams": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                }
+              }
+            },
+            "description": "Teams the recording belongs to."
+          },
+          "meeting_type": {
+            "type": "object",
+            "nullable": true,
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "scope": {
+                "type": "string"
+              }
+            },
+            "description": "Recording's meeting type, null if none."
+          },
+          "participants": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "email": {
+                  "type": "string",
+                  "nullable": true
+                },
+                "scope": {
+                  "type": "string",
+                  "enum": ["internal", "external", "unknown"]
+                },
+                "confirmed_attendee": {
+                  "type": "boolean"
+                },
+                "hs_contact_id": {
+                  "type": "string",
+                  "nullable": true,
+                  "description": "HubSpot contact id, if linked."
+                }
+              }
+            },
+            "description": "Meeting participants (include-gated by Grain)."
+          },
+          "highlights": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            },
+            "description": "Clips / highlights (include-gated)."
+          },
+          "ai_summary": {
+            "type": "object",
+            "properties": {
+              "text": {
+                "type": "string",
+                "description": "Markdown AI summary."
+              }
+            },
+            "description": "AI summary (include-gated)."
+          },
+          "ai_action_items": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "type": "string",
+                  "enum": ["pending", "completed"]
+                },
+                "timestamp_ms": {
+                  "type": "integer",
+                  "description": "Time in the recording the item was mentioned."
+                },
+                "text": {
+                  "type": "string"
+                },
+                "assignee": {
+                  "type": "object",
+                  "nullable": true,
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "user_id": {
+                      "type": "string",
+                      "nullable": true
+                    }
+                  }
+                }
+              }
+            },
+            "description": "AI action items (include-gated)."
+          },
+          "ai_template_sections": {
+            "type": "array",
+            "items": {
+              "type": "object"
+            },
+            "description": "AI template sections, shape varies by template (include-gated)."
+          },
+          "calendar_event": {
+            "type": "object",
+            "nullable": true,
+            "properties": {
+              "ical_uid": {
+                "type": "string"
+              }
+            },
+            "description": "Related calendar event (include-gated)."
+          },
+          "hubspot": {
+            "type": "object",
+            "properties": {
+              "hubspot_company_ids": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "hubspot_deal_ids": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "description": "Related HubSpot company/deal ids (include-gated)."
+          }
+        },
+        "required": [
+          "source_type",
+          "grain_recording_id",
+          "title",
+          "start_datetime",
+          "end_datetime",
+          "duration_ms",
+          "media_type",
+          "upstream_source",
+          "grain_url",
+          "tags",
+          "teams"
+        ]
+      },
+      "SourceMetadata": {
+        "oneOf": [
+          {
+            "$ref": "#/components/schemas/GrainSourceMetadata"
+          }
+        ],
+        "discriminator": {
+          "propertyName": "source_type",
+          "mapping": {
+            "grain": "#/components/schemas/GrainSourceMetadata"
+          }
+        },
+        "description": "Per-source provenance captured from the upstream connector. Currently only Grain is populated."
+      },
+      "SourceMetadataResponse": {
+        "type": "object",
+        "properties": {
+          "object": {
+            "type": "string",
+            "enum": ["source_metadata"]
+          },
+          "source_metadata": {
+            "$ref": "#/components/schemas/SourceMetadata"
+          }
+        },
+        "required": ["object", "source_metadata"]
       }
     },
     "securitySchemes": {
