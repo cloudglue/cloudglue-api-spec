@@ -7,7 +7,7 @@
       "name": "Apache License 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0"
     },
-    "version": "0.7.2"
+    "version": "0.7.3"
   },
   "servers": [
     {
@@ -7075,9 +7075,9 @@
     "/share": {
       "post": {
         "tags": ["Share"],
-        "summary": "Create a publicly available shareable asset",
+        "summary": "Create a shareable asset",
         "operationId": "createShareableAsset",
-        "description": "Create a publicly available shareable asset",
+        "description": "Create a shareable asset. Public assets (the default) are viewable by anyone with the link; private assets are restricted to members of the owning account and stream via a signed, token-gated playback url. A file (or file segment) can have at most one active share per visibility — one public and one private — each with its own stable URL; creating a second of the same visibility returns 409.",
         "requestBody": {
           "description": "Shareable asset creation request parameters",
           "content": {
@@ -7201,6 +7201,15 @@
             "schema": {
               "type": "string",
               "format": "date"
+            }
+          },
+          {
+            "name": "visibility",
+            "in": "query",
+            "description": "Filter shareable assets by visibility. A file can have one public and one private share.",
+            "schema": {
+              "type": "string",
+              "enum": ["public", "private"]
             }
           }
         ],
@@ -13660,13 +13669,18 @@
             "type": "object",
             "description": "The metadata of the shareable asset"
           },
+          "visibility": {
+            "type": "string",
+            "enum": ["public", "private"],
+            "description": "The visibility of the shareable asset. 'public' assets are viewable by anyone with the link; 'private' assets are restricted to members of the owning account and stream via a signed, token-gated playback url."
+          },
           "preview_url": {
             "type": "string",
             "description": "The thumbnail url of the shareable asset"
           },
           "media_download_url": {
             "type": "string",
-            "description": "The signed media download url of the shareable asset"
+            "description": "The signed media download url of the shareable asset. For private assets this url is short-lived (a few minutes) and should be used promptly."
           },
           "media_download_expires_at": {
             "type": "number",
@@ -13675,11 +13689,11 @@
           },
           "share_url": {
             "type": "string",
-            "description": "This is the url that can be used to share the shareable asset"
+            "description": "This is the url that can be used to share the shareable asset. For private assets the page requires sign-in and membership of the owning account."
           },
           "stream_url": {
             "type": "string",
-            "description": "The HLS stream url of the shareable asset. Available when the stream has finished processing."
+            "description": "The HLS stream url of the shareable asset. Available when the stream has finished processing. For private assets this is a signed, token-gated url that should be treated as short-lived."
           },
           "status": {
             "type": "string",
@@ -13727,6 +13741,12 @@
           "metadata": {
             "type": "object",
             "description": "The metadata of the shareable asset"
+          },
+          "visibility": {
+            "type": "string",
+            "enum": ["public", "private"],
+            "default": "public",
+            "description": "Visibility of the shareable asset. Defaults to 'public'. 'private' restricts the share page to members of the owning account and serves a signed, token-gated stream. Cannot be changed after creation."
           }
         }
       },
