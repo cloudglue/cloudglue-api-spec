@@ -7,7 +7,7 @@
       "name": "Apache License 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0"
     },
-    "version": "0.7.3"
+    "version": "0.7.4"
   },
   "servers": [
     {
@@ -14331,14 +14331,16 @@
                 }
               }
             },
-            "description": "Meeting participants (include-gated by Grain)."
+            "nullable": true,
+            "description": "Meeting participants (include-gated by Grain). Null when requested but empty."
           },
           "highlights": {
             "type": "array",
             "items": {
               "type": "object"
             },
-            "description": "Clips / highlights (include-gated)."
+            "nullable": true,
+            "description": "Clips / highlights (include-gated). Null when requested but empty."
           },
           "ai_summary": {
             "type": "object",
@@ -14348,7 +14350,8 @@
                 "description": "Markdown AI summary."
               }
             },
-            "description": "AI summary (include-gated)."
+            "nullable": true,
+            "description": "AI summary (include-gated). Null when requested but empty."
           },
           "ai_action_items": {
             "type": "array",
@@ -14384,14 +14387,16 @@
                 }
               }
             },
-            "description": "AI action items (include-gated)."
+            "nullable": true,
+            "description": "AI action items (include-gated). Null when requested but empty."
           },
           "ai_template_sections": {
             "type": "array",
             "items": {
               "type": "object"
             },
-            "description": "AI template sections, shape varies by template (include-gated)."
+            "nullable": true,
+            "description": "AI template sections, shape varies by template (include-gated). Null when requested but empty."
           },
           "calendar_event": {
             "type": "object",
@@ -14419,7 +14424,8 @@
                 }
               }
             },
-            "description": "Related HubSpot company/deal ids (include-gated)."
+            "nullable": true,
+            "description": "Related HubSpot company/deal ids (include-gated). Null when requested but empty."
           }
         },
         "required": [
