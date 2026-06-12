@@ -7,7 +7,7 @@
       "name": "Apache License 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0"
     },
-    "version": "0.7.4"
+    "version": "0.7.5"
   },
   "servers": [
     {
@@ -796,6 +796,124 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/FileList"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "An unexpected error occurred on the server",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/files/sync": {
+      "post": {
+        "tags": ["Files"],
+        "summary": "Sync a public URL into a file",
+        "operationId": "syncFileFromUrl",
+        "description": "Materialize a publicly accessible URL into a Cloudglue file without a data connector or a collection. Accepts direct http(s) video/audio file URLs (e.g. `.mp4`), public Dropbox share links, TikTok video URLs, and Loom share URLs. Idempotent: syncing the same URL returns the existing file. YouTube URLs are not supported here — add them to a collection via the add-media endpoint instead. Connector-native URIs (e.g. `s3://`, `gs://`, `gdrive://`, Zoom/Gong/Recall/Grain links) require the matching data connector — use POST /data-connectors/{id}/sync.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "url": {
+                    "type": "string",
+                    "description": "Publicly accessible URL to sync. Accepted forms — direct http(s) file URL: `https://example.com/video.mp4` · Dropbox share link: `https://www.dropbox.com/scl/fi/...` or `https://www.dropbox.com/s/...` · TikTok: `https://www.tiktok.com/@user/video/<id>` (and `vm.tiktok.com`/`vt.tiktok.com` short links) · Loom: `https://www.loom.com/share/<id>`.",
+                    "example": "https://example.com/video.mp4"
+                  },
+                  "metadata": {
+                    "type": "object",
+                    "description": "Optional metadata to associate with the file. Ignored if the URL was already synced (the existing file is returned unchanged).",
+                    "additionalProperties": true
+                  },
+                  "enable_segment_thumbnails": {
+                    "type": "boolean",
+                    "description": "Whether to generate per-segment thumbnails for the file. Defaults to true, matching file upload.",
+                    "default": true
+                  }
+                },
+                "required": ["url"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The synced file",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/File"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (e.g. an unsupported URL such as YouTube or a connector-native URI, a page link from an unsupported host, a file exceeding size or duration limits, or a URL that does not serve a media file)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "402": {
+            "description": "Insufficient credit balance (TikTok URLs consume scrape credits)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The source file is not accessible (e.g. a login-gated, expired, or restricted share link)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "The URL was not found or not accessible",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "415": {
+            "description": "The URL does not serve a supported video or audio content type",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Resource limits exceeded (monthly upload limit, total duration, file size, or total files)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
                 }
               }
             }
@@ -4327,7 +4445,7 @@
         "tags": ["Data Connectors"],
         "summary": "Sync a data connector URI into a file",
         "operationId": "syncDataConnectorFile",
-        "description": "Materialize a connector URI (e.g. `grain://recording/<id>`) into a Cloudglue file without starting a downstream job. Idempotent: syncing the same URI returns the existing file. For Grain, the file's `source_metadata` is populated from the recording.",
+        "description": "Materialize a connector URI (e.g. `grain://recording/<id>`) into a Cloudglue file without starting a downstream job. Idempotent: syncing the same URI returns the existing file. For Grain, the file's `source_metadata` is populated from the recording. Plain http(s), TikTok, and Loom URLs are not connector-syncable; ingest those via POST /files/sync instead. YouTube URLs can only be added to a collection via the add-media endpoint.",
         "parameters": [
           {
             "name": "id",
@@ -4349,7 +4467,7 @@
                 "properties": {
                   "url": {
                     "type": "string",
-                    "description": "Connector URI to sync. Must match the connector's type.",
+                    "description": "Connector URI to sync. Must match the connector's type. Accepted forms per connector — s3: `s3://<bucket>/<key>` · gcs: `gs://<bucket>/<key>` · google-drive: `gdrive://file/<fileId>` or a `https://drive.google.com/file/d/<fileId>/...` link · dropbox: `dropbox://<path>` (as returned by GET /data-connectors/{id}/files) or a `https://www.dropbox.com/scl/fi/...` share link · zoom: `zoom://uuid/<meetingUuid>`, `zoom://id/<meetingId>`, or a `https://*.zoom.us` join, recording-detail, or rec/share link · grain: `grain://recording/<id>` · gong: `gong://call/<id>` · recall: `recall://recording/<id>`.",
                     "example": "grain://recording/abc123"
                   }
                 },
@@ -4370,7 +4488,17 @@
             }
           },
           "400": {
-            "description": "Bad request (e.g. URL source does not match the connector type)",
+            "description": "Bad request (e.g. URL source does not match the connector type, or the link points to a folder)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The source file is not accessible (e.g. a login-gated, expired, or restricted Dropbox share link)",
             "content": {
               "application/json": {
                 "schema": {
@@ -4380,7 +4508,17 @@
             }
           },
           "404": {
-            "description": "Data connector not found",
+            "description": "Data connector not found, or the referenced file/recording was not found at the source",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "The external service rate-limited the request (e.g. Dropbox or Zoom); retry shortly",
             "content": {
               "application/json": {
                 "schema": {
