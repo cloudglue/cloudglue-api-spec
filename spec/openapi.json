@@ -838,8 +838,8 @@
                   },
                   "enable_segment_thumbnails": {
                     "type": "boolean",
-                    "description": "Whether to generate per-segment thumbnails for the file. Defaults to false.",
-                    "default": false
+                    "description": "Whether to generate per-segment thumbnails for the file. Defaults to true, matching file upload.",
+                    "default": true
                   }
                 },
                 "required": ["url"]
