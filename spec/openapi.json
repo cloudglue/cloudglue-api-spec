@@ -7,7 +7,7 @@
       "name": "Apache License 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0"
     },
-    "version": "0.7.5"
+    "version": "0.7.6"
   },
   "servers": [
     {
@@ -11333,10 +11333,10 @@
           },
           "min_seconds": {
             "type": "number",
-            "minimum": 1,
+            "minimum": 0.6,
             "maximum": 600,
             "nullable": true,
-            "description": "The minimum length of a shot in seconds. Defaults to 1."
+            "description": "The minimum length of a shot in seconds. Defaults to 0.6."
           },
           "max_seconds": {
             "type": "number",
@@ -12702,16 +12702,16 @@
             "description": "Detection algorithm:\n\u2022 **adaptive**: Designed for dynamic footage with camera movement and action (default)\n\u2022 **content**: Optimized for controlled footage with clear visual transitions"
           },
           "max_duration_seconds": {
-            "type": "integer",
+            "type": "number",
             "minimum": 1,
             "maximum": 600,
             "description": "Maximum duration for each segment in seconds (1 second to 10 minutes, default: 5 minutes)"
           },
           "min_duration_seconds": {
-            "type": "integer",
-            "minimum": 1,
+            "type": "number",
+            "minimum": 0.6,
             "maximum": 600,
-            "description": "Minimum duration for each segment in seconds (1 second to 10 minutes, default: 1 second)"
+            "description": "Minimum duration for each segment in seconds (0.6 seconds to 10 minutes, default: 0.6 seconds)"
           },
           "fill_gaps": {
             "type": "boolean",
