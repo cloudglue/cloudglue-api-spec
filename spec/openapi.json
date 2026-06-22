@@ -7,7 +7,7 @@
       "name": "Apache License 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0"
     },
-    "version": "0.7.6"
+    "version": "0.7.7"
   },
   "servers": [
     {
@@ -10297,6 +10297,25 @@
               "use_in_default_index": {
                 "type": "boolean",
                 "description": "When true, the video's search documents will be added to the account's default index, making them searchable via the Response API and Deep Search API with `source: 'default'`."
+              },
+              "participants": {
+                "type": "array",
+                "maxItems": 50,
+                "description": "Known participants on the recording. When provided, speaker naming is constrained to these people: transcript speaker labels will only use one of these names (or a generic \"Speaker N\"), never an invented name. Intended for uploaded files, which (unlike data-connector files such as Grain) carry no participant metadata; for connector files this is populated automatically and need not be supplied.",
+                "items": {
+                  "type": "object",
+                  "required": ["name"],
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "description": "Participant display name, e.g. \"Alice Smith\"."
+                    },
+                    "scope": {
+                      "type": "string",
+                      "description": "Optional free-form context for the participant, e.g. a role, affiliation, or \"internal\"/\"external\". Used only as naming context."
+                    }
+                  }
+                }
               }
             }
           },
@@ -10362,6 +10381,25 @@
               "enable_audio_description": {
                 "type": "boolean",
                 "description": "Whether the user requested to generate audio description"
+              },
+              "participants": {
+                "type": "array",
+                "maxItems": 50,
+                "description": "Known participants on the recording. When provided, speaker naming is constrained to these people: transcript speaker labels will only use one of these names (or a generic \"Speaker N\"), never an invented name. Intended for uploaded files, which (unlike data-connector files such as Grain) carry no participant metadata; for connector files this is populated automatically and need not be supplied.",
+                "items": {
+                  "type": "object",
+                  "required": ["name"],
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "description": "Participant display name, e.g. \"Alice Smith\"."
+                    },
+                    "scope": {
+                      "type": "string",
+                      "description": "Optional free-form context for the participant, e.g. a role, affiliation, or \"internal\"/\"external\". Used only as naming context."
+                    }
+                  }
+                }
               }
             }
           },
