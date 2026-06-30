@@ -8448,7 +8448,7 @@
             "type": "object",
             "properties": {
               "url": {
-                "description": "Input video URL. Supports URIs of files uploaded to Cloudglue Files endpoint, public YouTube video URLs, public TikTok video URLs, public Loom share URLs, public HTTP URLs (including direct image URLs such as JPEG/PNG/WebP), and files which have been granted access to Cloudglue via data connectors.\n\nNote that YouTube videos are currently limited to speech level understanding only. Public TikTok video URLs will be scraped and stored automatically \u2014 subject to charges. For files via our Data connectors, see our documentation on data connectors for setup information.",
+                "description": "Input media URL. Supports URIs of files uploaded to Cloudglue Files endpoint, public YouTube video URLs, public TikTok video URLs, public Loom share URLs, public HTTP URLs (including direct image URLs such as JPEG/PNG/WebP), and files which have been granted access to Cloudglue via data connectors.\n\nNote that YouTube videos are currently limited to speech level understanding only. Public TikTok video URLs will be scraped and stored automatically \u2014 subject to charges. For files via our Data connectors, see our documentation on data connectors for setup information.",
                 "type": "string"
               },
               "prompt": {
@@ -8547,12 +8547,12 @@
               "width": {
                 "type": "integer",
                 "nullable": true,
-                "description": "Video width in pixels (null for audio files)"
+                "description": "Width in pixels (null for audio files)"
               },
               "height": {
                 "type": "integer",
                 "nullable": true,
-                "description": "Video height in pixels (null for audio files)"
+                "description": "Height in pixels (null for audio files)"
               },
               "sample_rate": {
                 "type": "integer",
@@ -8580,7 +8580,7 @@
                 "description": "Whether the file has audio"
               }
             },
-            "description": "Unified media information for both video and audio files"
+            "description": "Unified media information for video, audio, and image files"
           },
           "video_info": {
             "type": "object",
@@ -10258,7 +10258,7 @@
             "required": ["url"],
             "properties": {
               "url": {
-                "description": "Input video URL. Supports URIs of files uploaded to Cloudglue Files endpoint, public YouTube video URLs, public TikTok video URLs, public Loom share URLs, public HTTP URLs (including direct image URLs such as JPEG/PNG/WebP), and files which have been granted access to Cloudglue via data connectors.\n\nNote that YouTube videos are currently limited to speech level understanding only. Public TikTok video URLs will be scraped and stored automatically \u2014 subject to charges. For files via our Data connectors, see our documentation on data connectors for setup information.",
+                "description": "Input media URL. Supports URIs of files uploaded to Cloudglue Files endpoint, public YouTube video URLs, public TikTok video URLs, public Loom share URLs, public HTTP URLs (including direct image URLs such as JPEG/PNG/WebP), and files which have been granted access to Cloudglue via data connectors.\n\nNote that YouTube videos are currently limited to speech level understanding only. Public TikTok video URLs will be scraped and stored automatically \u2014 subject to charges. For files via our Data connectors, see our documentation on data connectors for setup information.",
                 "type": "string"
               },
               "enable_summary": {
