@@ -7,7 +7,7 @@
       "name": "Apache License 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0"
     },
-    "version": "0.7.7"
+    "version": "0.7.8"
   },
   "servers": [
     {
@@ -631,11 +631,11 @@
     "/files": {
       "post": {
         "tags": ["Files"],
-        "summary": "Upload a video file that can be used with Cloudglue services",
+        "summary": "Upload a video, audio, or image file that can be used with Cloudglue services",
         "operationId": "uploadFile",
-        "description": "Upload a video file that can be used with Cloudglue services",
+        "description": "Upload a video, audio, or image file that can be used with Cloudglue services",
         "requestBody": {
-          "description": "Upload a video file",
+          "description": "Upload a video, audio, or image file",
           "content": {
             "multipart/form-data": {
               "schema": {
@@ -8448,7 +8448,7 @@
             "type": "object",
             "properties": {
               "url": {
-                "description": "Input video URL. Supports URIs of files uploaded to Cloudglue Files endpoint, public YouTube video URLs, public TikTok video URLs, public Loom share URLs, public HTTP URLs, and files which have been granted access to Cloudglue via data connectors.\n\nNote that YouTube videos are currently limited to speech level understanding only. Public TikTok video URLs will be scraped and stored automatically \u2014 subject to charges. For files via our Data connectors, see our documentation on data connectors for setup information.",
+                "description": "Input media URL. Supports URIs of files uploaded to Cloudglue Files endpoint, public YouTube video URLs, public TikTok video URLs, public Loom share URLs, public HTTP URLs (including direct image URLs such as JPEG/PNG/WebP), and files which have been granted access to Cloudglue via data connectors.\n\nNote that YouTube videos are currently limited to speech level understanding only. Public TikTok video URLs will be scraped and stored automatically \u2014 subject to charges. For files via our Data connectors, see our documentation on data connectors for setup information.",
                 "type": "string"
               },
               "prompt": {
@@ -8533,8 +8533,8 @@
           },
           "media_type": {
             "type": "string",
-            "enum": ["video", "audio"],
-            "description": "Type of media file (video or audio)"
+            "enum": ["video", "audio", "image"],
+            "description": "Type of media file (video, audio, or image). Images are processed at the file level only (no segmentation)."
           },
           "media_info": {
             "type": "object",
@@ -8547,12 +8547,12 @@
               "width": {
                 "type": "integer",
                 "nullable": true,
-                "description": "Video width in pixels (null for audio files)"
+                "description": "Width in pixels (null for audio files)"
               },
               "height": {
                 "type": "integer",
                 "nullable": true,
-                "description": "Video height in pixels (null for audio files)"
+                "description": "Height in pixels (null for audio files)"
               },
               "sample_rate": {
                 "type": "integer",
@@ -8580,7 +8580,7 @@
                 "description": "Whether the file has audio"
               }
             },
-            "description": "Unified media information for both video and audio files"
+            "description": "Unified media information for video, audio, and image files"
           },
           "video_info": {
             "type": "object",
@@ -8654,7 +8654,7 @@
           "file": {
             "type": "string",
             "format": "binary",
-            "description": "The video file to be uploaded"
+            "description": "The video, audio, or image file to be uploaded"
           },
           "metadata": {
             "type": "object",
@@ -10258,7 +10258,7 @@
             "required": ["url"],
             "properties": {
               "url": {
-                "description": "Input video URL. Supports URIs of files uploaded to Cloudglue Files endpoint, public YouTube video URLs, public TikTok video URLs, public Loom share URLs, public HTTP URLs, and files which have been granted access to Cloudglue via data connectors.\n\nNote that YouTube videos are currently limited to speech level understanding only. Public TikTok video URLs will be scraped and stored automatically \u2014 subject to charges. For files via our Data connectors, see our documentation on data connectors for setup information.",
+                "description": "Input media URL. Supports URIs of files uploaded to Cloudglue Files endpoint, public YouTube video URLs, public TikTok video URLs, public Loom share URLs, public HTTP URLs (including direct image URLs such as JPEG/PNG/WebP), and files which have been granted access to Cloudglue via data connectors.\n\nNote that YouTube videos are currently limited to speech level understanding only. Public TikTok video URLs will be scraped and stored automatically \u2014 subject to charges. For files via our Data connectors, see our documentation on data connectors for setup information.",
                 "type": "string"
               },
               "enable_summary": {
