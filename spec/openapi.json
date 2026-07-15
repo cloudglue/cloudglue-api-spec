@@ -7,7 +7,7 @@
       "name": "Apache License 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0"
     },
-    "version": "0.7.8"
+    "version": "0.7.9"
   },
   "servers": [
     {
@@ -782,7 +782,7 @@
           {
             "name": "filter",
             "in": "query",
-            "description": "JSON string containing filter criteria to constrain file search results. This is the JSON string version of the SearchFilter object used in the search API.\n\n**Supported Filter Types:**\n\n\u2022 **metadata** - Filter by file metadata using JSON path expressions (e.g., 'metadata.speaker', 'metadata.category.subcategory')\n\u2022 **video_info** - Filter by video information properties. Supports optional `scope` ('file' or 'segment', default 'file')\n  - `duration_seconds` - Video/segment duration in seconds (supports file and segment scope)\n  - `has_audio` - Whether the video has audio (true/false, file scope only)\n\n\u2022 **file** - Filter by file properties\n  - `filename` - File name (string)\n  - `uri` - File URI (string)\n  - `id` - File ID (UUID string)\n  - `created_at` - Creation timestamp (ISO 8601 string)\n  - `bytes` - File size in bytes (number)\n\n**Supported Operators:**\n\u2022 **Equal** - Exact match (requires valueText)\n\u2022 **NotEqual** - Not equal to value (requires valueText)\n\u2022 **LessThan** - Less than value (requires valueText)\n\u2022 **GreaterThan** - Greater than value (requires valueText)\n\u2022 **Like** - Case-insensitive pattern matching with wildcards (requires valueText)\n\u2022 **In** - Value is in array (requires valueTextArray)\n\u2022 **ContainsAny** - Array contains any of the values (requires valueTextArray)\n\u2022 **ContainsAll** - Array contains all of the values (requires valueTextArray)\n\n**Examples:**\n\n**Metadata filtering:**\n```json\n{\"metadata\":[{\"path\":\"speaker\",\"operator\":\"Like\",\"valueText\":\"YO%\"}]}\n```\n\n**Video info filtering (file-level):**\n```json\n{\"video_info\":[{\"path\":\"duration_seconds\",\"operator\":\"GreaterThan\",\"valueText\":\"60\"}]}\n```\n\n**Video info filtering (segment-level):**\n```json\n{\"video_info\":[{\"path\":\"duration_seconds\",\"operator\":\"LessThan\",\"valueText\":\"30\",\"scope\":\"segment\"}]}\n```\n\n**File property filtering:**\n```json\n{\"file\":[{\"path\":\"filename\",\"operator\":\"Like\",\"valueText\":\"%.mp4\"}]}\n```\n```json\n{\"file\":[{\"path\":\"bytes\",\"operator\":\"GreaterThan\",\"valueText\":\"1048576\"}]}\n```\n```json\n{\"file\":[{\"path\":\"created_at\",\"operator\":\"GreaterThan\",\"valueText\":\"2024-01-01T00:00:00Z\"}]}\n```\n\n**Combined filtering:**\n```json\n{\"metadata\":[{\"path\":\"speaker\",\"operator\":\"Equal\",\"valueText\":\"John\"}],\"video_info\":[{\"path\":\"has_audio\",\"operator\":\"Equal\",\"valueText\":\"true\"}],\"file\":[{\"path\":\"filename\",\"operator\":\"Like\",\"valueText\":\"%.mp4\"}]}\n```",
+            "description": "JSON string containing filter criteria to constrain file search results. This is the JSON string version of the SearchFilter object used in the search API.\n\n**Supported Filter Types:**\n\n• **metadata** - Filter by file metadata using JSON path expressions (e.g., 'metadata.speaker', 'metadata.category.subcategory')\n• **video_info** - Filter by video information properties. Supports optional `scope` ('file' or 'segment', default 'file')\n  - `duration_seconds` - Video/segment duration in seconds (supports file and segment scope)\n  - `has_audio` - Whether the video has audio (true/false, file scope only)\n\n• **file** - Filter by file properties\n  - `filename` - File name (string)\n  - `uri` - File URI (string)\n  - `id` - File ID (UUID string)\n  - `created_at` - Creation timestamp (ISO 8601 string)\n  - `bytes` - File size in bytes (number)\n\n**Supported Operators:**\n• **Equal** - Exact match (requires valueText)\n• **NotEqual** - Not equal to value (requires valueText)\n• **LessThan** - Less than value (requires valueText)\n• **GreaterThan** - Greater than value (requires valueText)\n• **Like** - Case-insensitive pattern matching with wildcards (requires valueText)\n• **In** - Value is in array (requires valueTextArray)\n• **ContainsAny** - Array contains any of the values (requires valueTextArray)\n• **ContainsAll** - Array contains all of the values (requires valueTextArray)\n\n**Examples:**\n\n**Metadata filtering:**\n```json\n{\"metadata\":[{\"path\":\"speaker\",\"operator\":\"Like\",\"valueText\":\"YO%\"}]}\n```\n\n**Video info filtering (file-level):**\n```json\n{\"video_info\":[{\"path\":\"duration_seconds\",\"operator\":\"GreaterThan\",\"valueText\":\"60\"}]}\n```\n\n**Video info filtering (segment-level):**\n```json\n{\"video_info\":[{\"path\":\"duration_seconds\",\"operator\":\"LessThan\",\"valueText\":\"30\",\"scope\":\"segment\"}]}\n```\n\n**File property filtering:**\n```json\n{\"file\":[{\"path\":\"filename\",\"operator\":\"Like\",\"valueText\":\"%.mp4\"}]}\n```\n```json\n{\"file\":[{\"path\":\"bytes\",\"operator\":\"GreaterThan\",\"valueText\":\"1048576\"}]}\n```\n```json\n{\"file\":[{\"path\":\"created_at\",\"operator\":\"GreaterThan\",\"valueText\":\"2024-01-01T00:00:00Z\"}]}\n```\n\n**Combined filtering:**\n```json\n{\"metadata\":[{\"path\":\"speaker\",\"operator\":\"Equal\",\"valueText\":\"John\"}],\"video_info\":[{\"path\":\"has_audio\",\"operator\":\"Equal\",\"valueText\":\"true\"}],\"file\":[{\"path\":\"filename\",\"operator\":\"Like\",\"valueText\":\"%.mp4\"}]}\n```",
             "required": false,
             "schema": {
               "type": "string"
@@ -2346,7 +2346,7 @@
           {
             "name": "filter",
             "in": "query",
-            "description": "JSON string containing filter criteria to constrain file search results. This is the JSON string version of the SearchFilter object used in the search API.\n\n**Supported Filter Types:**\n\n\u2022 **metadata** - Filter by file metadata using JSON path expressions (e.g., 'metadata.speaker', 'metadata.category.subcategory')\n\u2022 **video_info** - Filter by video information properties. Supports optional `scope` ('file' or 'segment', default 'file')\n  - `duration_seconds` - Video/segment duration in seconds (supports file and segment scope)\n  - `has_audio` - Whether the video has audio (true/false, file scope only)\n\n\u2022 **file** - Filter by file properties\n  - `filename` - File name (string)\n  - `uri` - File URI (string)\n  - `id` - File ID (UUID string)\n  - `created_at` - Creation timestamp (ISO 8601 string)\n  - `bytes` - File size in bytes (number)\n\n**Supported Operators:**\n\u2022 **Equal** - Exact match (requires valueText)\n\u2022 **NotEqual** - Not equal to value (requires valueText)\n\u2022 **LessThan** - Less than value (requires valueText)\n\u2022 **GreaterThan** - Greater than value (requires valueText)\n\u2022 **Like** - Case-insensitive pattern matching with wildcards (requires valueText)\n\u2022 **In** - Value is in array (requires valueTextArray)\n\u2022 **ContainsAny** - Array contains any of the values (requires valueTextArray)\n\u2022 **ContainsAll** - Array contains all of the values (requires valueTextArray)\n\n**Examples:**\n\n**Metadata filtering:**\n```json\n{\"metadata\":[{\"path\":\"speaker\",\"operator\":\"Like\",\"valueText\":\"YO%\"}]}\n```\n\n**Video info filtering (file-level):**\n```json\n{\"video_info\":[{\"path\":\"duration_seconds\",\"operator\":\"GreaterThan\",\"valueText\":\"60\"}]}\n```\n\n**Video info filtering (segment-level):**\n```json\n{\"video_info\":[{\"path\":\"duration_seconds\",\"operator\":\"LessThan\",\"valueText\":\"30\",\"scope\":\"segment\"}]}\n```\n\n**File property filtering:**\n```json\n{\"file\":[{\"path\":\"filename\",\"operator\":\"Like\",\"valueText\":\"%.mp4\"}]}\n```\n```json\n{\"file\":[{\"path\":\"bytes\",\"operator\":\"GreaterThan\",\"valueText\":\"1048576\"}]}\n```\n```json\n{\"file\":[{\"path\":\"created_at\",\"operator\":\"GreaterThan\",\"valueText\":\"2024-01-01T00:00:00Z\"}]}\n```\n\n**Combined filtering:**\n```json\n{\"metadata\":[{\"path\":\"speaker\",\"operator\":\"Equal\",\"valueText\":\"John\"}],\"video_info\":[{\"path\":\"has_audio\",\"operator\":\"Equal\",\"valueText\":\"true\"}],\"file\":[{\"path\":\"filename\",\"operator\":\"Like\",\"valueText\":\"%.mp4\"}]}\n```",
+            "description": "JSON string containing filter criteria to constrain file search results. This is the JSON string version of the SearchFilter object used in the search API.\n\n**Supported Filter Types:**\n\n• **metadata** - Filter by file metadata using JSON path expressions (e.g., 'metadata.speaker', 'metadata.category.subcategory')\n• **video_info** - Filter by video information properties. Supports optional `scope` ('file' or 'segment', default 'file')\n  - `duration_seconds` - Video/segment duration in seconds (supports file and segment scope)\n  - `has_audio` - Whether the video has audio (true/false, file scope only)\n\n• **file** - Filter by file properties\n  - `filename` - File name (string)\n  - `uri` - File URI (string)\n  - `id` - File ID (UUID string)\n  - `created_at` - Creation timestamp (ISO 8601 string)\n  - `bytes` - File size in bytes (number)\n\n**Supported Operators:**\n• **Equal** - Exact match (requires valueText)\n• **NotEqual** - Not equal to value (requires valueText)\n• **LessThan** - Less than value (requires valueText)\n• **GreaterThan** - Greater than value (requires valueText)\n• **Like** - Case-insensitive pattern matching with wildcards (requires valueText)\n• **In** - Value is in array (requires valueTextArray)\n• **ContainsAny** - Array contains any of the values (requires valueTextArray)\n• **ContainsAll** - Array contains all of the values (requires valueTextArray)\n\n**Examples:**\n\n**Metadata filtering:**\n```json\n{\"metadata\":[{\"path\":\"speaker\",\"operator\":\"Like\",\"valueText\":\"YO%\"}]}\n```\n\n**Video info filtering (file-level):**\n```json\n{\"video_info\":[{\"path\":\"duration_seconds\",\"operator\":\"GreaterThan\",\"valueText\":\"60\"}]}\n```\n\n**Video info filtering (segment-level):**\n```json\n{\"video_info\":[{\"path\":\"duration_seconds\",\"operator\":\"LessThan\",\"valueText\":\"30\",\"scope\":\"segment\"}]}\n```\n\n**File property filtering:**\n```json\n{\"file\":[{\"path\":\"filename\",\"operator\":\"Like\",\"valueText\":\"%.mp4\"}]}\n```\n```json\n{\"file\":[{\"path\":\"bytes\",\"operator\":\"GreaterThan\",\"valueText\":\"1048576\"}]}\n```\n```json\n{\"file\":[{\"path\":\"created_at\",\"operator\":\"GreaterThan\",\"valueText\":\"2024-01-01T00:00:00Z\"}]}\n```\n\n**Combined filtering:**\n```json\n{\"metadata\":[{\"path\":\"speaker\",\"operator\":\"Equal\",\"valueText\":\"John\"}],\"video_info\":[{\"path\":\"has_audio\",\"operator\":\"Equal\",\"valueText\":\"true\"}],\"file\":[{\"path\":\"filename\",\"operator\":\"Like\",\"valueText\":\"%.mp4\"}]}\n```",
             "required": false,
             "schema": {
               "type": "string"
@@ -4269,7 +4269,7 @@
         "tags": ["Data Connectors"],
         "summary": "List files in a data connector",
         "operationId": "listDataConnectorFiles",
-        "description": "Browse files available in a connected data source. Returns URIs compatible with Cloudglue's file import system. Supports pagination and provider-specific filtering.",
+        "description": "Browse files available in a connected data source. Returns URIs compatible with Cloudglue's file import system, and per-file provider metadata (see the `metadata` field) so you can inspect participants, hosts, durations, and AI summaries before importing. Supports pagination and filtering: `from`/`to` and `title_search` are shared filters honored by every connector that can (see each parameter's support matrix); parameters a connector can't honor are silently ignored. When filters are applied, a page may contain fewer than `limit` items — even zero — while `has_more` is still true: continue paginating until `next_page_token` is null rather than stopping at the first short or empty page.",
         "parameters": [
           {
             "name": "id",
@@ -4296,7 +4296,7 @@
           {
             "name": "page_token",
             "in": "query",
-            "description": "Opaque cursor for pagination. Use the `next_page_token` from a previous response.",
+            "description": "Opaque cursor for pagination. Use the `next_page_token` from a previous response. Tokens are only valid with the same filter parameters they were issued under.",
             "required": false,
             "schema": {
               "type": "string"
@@ -4305,7 +4305,7 @@
           {
             "name": "from",
             "in": "query",
-            "description": "Start date for filtering (YYYY-MM-DD). Applies to Zoom and Grain connectors only.",
+            "description": "Start date for filtering (YYYY-MM-DD, inclusive UTC day bound). Native for Zoom and Gong (call start; both default to a 6-month lookback when omitted), Grain and Recall (recording start/created time), and Google Drive (createdTime); matched while listing for Dropbox (client_modified). Ignored for S3/GCS.",
             "required": false,
             "schema": {
               "type": "string",
@@ -4315,7 +4315,7 @@
           {
             "name": "to",
             "in": "query",
-            "description": "End date for filtering (YYYY-MM-DD). Applies to Zoom and Grain connectors only.",
+            "description": "End date for filtering (YYYY-MM-DD, inclusive UTC day bound). Same per-connector support as `from`. Ignored for S3/GCS.",
             "required": false,
             "schema": {
               "type": "string",
@@ -4361,7 +4361,7 @@
           {
             "name": "title_search",
             "in": "query",
-            "description": "Title search filter. Applies to Grain connectors only. See the [Grain documentation](https://developers.grain.com/#recording-filter) for more details.",
+            "description": "Case-insensitive title filter. Native for Grain (title_search) and Google Drive (name contains); matched while listing for Zoom (topic), Gong (call title), and Dropbox (filename). Ignored for Recall (no title is available when listing) and S3/GCS.",
             "required": false,
             "schema": {
               "type": "string"
@@ -4445,7 +4445,7 @@
         "tags": ["Data Connectors"],
         "summary": "Sync a data connector URI into a file",
         "operationId": "syncDataConnectorFile",
-        "description": "Materialize a connector URI (e.g. `grain://recording/<id>`) into a Cloudglue file without starting a downstream job. Idempotent: syncing the same URI returns the existing file. For Grain, the file's `source_metadata` is populated from the recording. Plain http(s), TikTok, and Loom URLs are not connector-syncable; ingest those via POST /files/sync instead. YouTube URLs can only be added to a collection via the add-media endpoint.",
+        "description": "Materialize a connector URI (e.g. `grain://recording/<id>`) into a Cloudglue file without starting a downstream job. Idempotent: syncing the same URI returns the existing file. For Grain, Zoom, Recall, Google Drive, Dropbox, and Gong the file's `source_metadata` is populated from the provider (see the SourceMetadata schema). Plain http(s), TikTok, and Loom URLs are not connector-syncable; ingest those via POST /files/sync instead. YouTube URLs can only be added to a collection via the add-media endpoint.",
         "parameters": [
           {
             "name": "id",
@@ -4555,7 +4555,7 @@
         "tags": ["Data Connectors"],
         "summary": "Look up source metadata for a connector URI",
         "operationId": "getDataConnectorSourceMetadata",
-        "description": "Fetch source metadata for a connector URI directly from the upstream source, without creating a Cloudglue file. Currently supported for Grain; other connector types return 501.",
+        "description": "Fetch source metadata for a connector URI directly from the upstream source, without creating a Cloudglue file. Supported for Grain, Zoom, Recall, Google Drive, Dropbox, and Gong; S3/GCS return 501 (plain object stores have no richer metadata). Returns 502 when the upstream provider's response can't be validated.",
         "parameters": [
           {
             "name": "id",
@@ -6192,7 +6192,7 @@
         "tags": ["Segments"],
         "summary": "Create a new segmentation job",
         "operationId": "createSegments",
-        "description": "Create intelligent segments for video or audio files based on shot detection or narrative analysis.\n\n**Audio File Support:**\n\n- Audio files support **narrative** criteria only (shot detection is not available for audio).\n- Audio files default to the 'balanced' strategy and may opt into 'transcript'.\n\n**Note: YouTube URLs and audio files are supported for narrative-based segmentation only.** Shot-based segmentation requires direct video file access. Use Cloudglue Files, HTTP URLs, or files from data connectors for shot-based segmentation.\n\n**Narrative Segmentation Strategies:**\n\n- **comprehensive** (default for non-YouTube/non-audio files): Uses a VLM to deeply analyze logical segments of video. Only available for video files (not YouTube or audio).\n- **balanced** (default for YouTube videos and audio files): Balanced analysis approach using multiple modalities. Supports YouTube URLs and audio files.\n- **transcript**: Cheap and fast speech-transcript-based segmentation. Requires a transcript and returns an error when none is available \u2014 use `balanced` for silent or visual-only content (or `comprehensive` for non-YouTube/non-audio video files).\n\n**YouTube URLs and Audio Files**: Only the 'balanced' and 'transcript' strategies are accepted. 'comprehensive' will be rejected with an error.\n\n**Chapter Count Parameters:**\n\n- **number_of_chapters**: Target number of chapters. If only this is provided, min_chapters and max_chapters are calculated automatically.\n- **min_chapters**: Minimum number of chapters. If provided with number_of_chapters and max, validates min is less than or equal to number_of_chapters which is less than or equal to max.\n- **max_chapters**: Maximum number of chapters. If provided with number_of_chapters and min, validates min is less than or equal to number_of_chapters which is less than or equal to max.\n- If none are provided, chapter counts are calculated automatically based on file duration.",
+        "description": "Create intelligent segments for video or audio files based on shot detection or narrative analysis.\n\n**Audio File Support:**\n\n- Audio files support **narrative** criteria only (shot detection is not available for audio).\n- Audio files default to the 'balanced' strategy and may opt into 'transcript'.\n\n**Note: YouTube URLs and audio files are supported for narrative-based segmentation only.** Shot-based segmentation requires direct video file access. Use Cloudglue Files, HTTP URLs, or files from data connectors for shot-based segmentation.\n\n**Narrative Segmentation Strategies:**\n\n- **comprehensive** (default for non-YouTube/non-audio files): Uses a VLM to deeply analyze logical segments of video. Only available for video files (not YouTube or audio).\n- **balanced** (default for YouTube videos and audio files): Balanced analysis approach using multiple modalities. Supports YouTube URLs and audio files.\n- **transcript**: Cheap and fast speech-transcript-based segmentation. Requires a transcript and returns an error when none is available — use `balanced` for silent or visual-only content (or `comprehensive` for non-YouTube/non-audio video files).\n\n**YouTube URLs and Audio Files**: Only the 'balanced' and 'transcript' strategies are accepted. 'comprehensive' will be rejected with an error.\n\n**Chapter Count Parameters:**\n\n- **number_of_chapters**: Target number of chapters. If only this is provided, min_chapters and max_chapters are calculated automatically.\n- **min_chapters**: Minimum number of chapters. If provided with number_of_chapters and max, validates min is less than or equal to number_of_chapters which is less than or equal to max.\n- **max_chapters**: Maximum number of chapters. If provided with number_of_chapters and min, validates min is less than or equal to number_of_chapters which is less than or equal to max.\n- If none are provided, chapter counts are calculated automatically based on file duration.",
         "requestBody": {
           "description": "Segmentation job parameters",
           "content": {
@@ -7718,7 +7718,7 @@
       },
       "KnowledgeBaseCollections": {
         "type": "object",
-        "description": "Search within specific collections. This is the default source mode and is backward-compatible \u2014 the `source` field can be omitted.",
+        "description": "Search within specific collections. This is the default source mode and is backward-compatible — the `source` field can be omitted.",
         "required": ["collections"],
         "properties": {
           "source": {
@@ -8448,7 +8448,7 @@
             "type": "object",
             "properties": {
               "url": {
-                "description": "Input media URL. Supports URIs of files uploaded to Cloudglue Files endpoint, public YouTube video URLs, public TikTok video URLs, public Loom share URLs, public HTTP URLs (including direct image URLs such as JPEG/PNG/WebP), and files which have been granted access to Cloudglue via data connectors.\n\nNote that YouTube videos are currently limited to speech level understanding only. Public TikTok video URLs will be scraped and stored automatically \u2014 subject to charges. For files via our Data connectors, see our documentation on data connectors for setup information.",
+                "description": "Input media URL. Supports URIs of files uploaded to Cloudglue Files endpoint, public YouTube video URLs, public TikTok video URLs, public Loom share URLs, public HTTP URLs (including direct image URLs such as JPEG/PNG/WebP), and files which have been granted access to Cloudglue via data connectors.\n\nNote that YouTube videos are currently limited to speech level understanding only. Public TikTok video URLs will be scraped and stored automatically — subject to charges. For files via our Data connectors, see our documentation on data connectors for setup information.",
                 "type": "string"
               },
               "prompt": {
@@ -8928,7 +8928,7 @@
               "rich-transcripts",
               "face-analysis"
             ],
-            "description": "Type of collection, determines how videos are processed and what data is extracted.\n\n**Collection Types:**\n- **media-descriptions**: Generate comprehensive media descriptions with speech, visual, and text analysis (use `describe_config`)\n- **entities**: Extract structured data/entities from videos (requires `extract_config`)\n- **rich-transcripts**: Generate rich transcriptions with speech and visual descriptions (use `transcribe_config`). For backward compatibility only, new collections should use `media-descriptions` instead.\n- **face-analysis**: Detect and index faces in videos for face matching and search (use `face_detection_config`)\n\n\u26a0\ufe0f **Important**: Only provide the config that matches your collection_type. Other configs will be ignored."
+            "description": "Type of collection, determines how videos are processed and what data is extracted.\n\n**Collection Types:**\n- **media-descriptions**: Generate comprehensive media descriptions with speech, visual, and text analysis (use `describe_config`)\n- **entities**: Extract structured data/entities from videos (requires `extract_config`)\n- **rich-transcripts**: Generate rich transcriptions with speech and visual descriptions (use `transcribe_config`). For backward compatibility only, new collections should use `media-descriptions` instead.\n- **face-analysis**: Detect and index faces in videos for face matching and search (use `face_detection_config`)\n\n⚠️ **Important**: Only provide the config that matches your collection_type. Other configs will be ignored."
           },
           "name": {
             "type": "string",
@@ -8941,7 +8941,7 @@
           },
           "describe_config": {
             "type": "object",
-            "description": "\ud83c\udfaf **Use ONLY when collection_type = 'media-descriptions'**\n\nConfiguration for comprehensive media description from videos. Optional - if not provided, default values will be used. This config will be ignored for other collection types.",
+            "description": "🎯 **Use ONLY when collection_type = 'media-descriptions'**\n\nConfiguration for comprehensive media description from videos. Optional - if not provided, default values will be used. This config will be ignored for other collection types.",
             "properties": {
               "enable_summary": {
                 "type": "boolean",
@@ -8967,7 +8967,7 @@
           },
           "extract_config": {
             "type": "object",
-            "description": "\ud83c\udfaf **Use ONLY when collection_type = 'entities'**\n\nConfiguration for automatic entity extraction from videos. Required for entities collections. This config will be ignored for other collection types.",
+            "description": "🎯 **Use ONLY when collection_type = 'entities'**\n\nConfiguration for automatic entity extraction from videos. Required for entities collections. This config will be ignored for other collection types.",
             "properties": {
               "prompt": {
                 "type": "string",
@@ -8993,7 +8993,7 @@
           },
           "transcribe_config": {
             "type": "object",
-            "description": "\ud83c\udfaf **Use ONLY when collection_type = 'rich-transcripts'**\n\nConfiguration for rich transcription from videos. Optional - if not provided, default values will be used. This config will be ignored for other collection types.",
+            "description": "🎯 **Use ONLY when collection_type = 'rich-transcripts'**\n\nConfiguration for rich transcription from videos. Optional - if not provided, default values will be used. This config will be ignored for other collection types.",
             "properties": {
               "enable_summary": {
                 "type": "boolean",
@@ -9027,7 +9027,7 @@
           },
           "face_detection_config": {
             "type": "object",
-            "description": "\ud83c\udfaf **Use ONLY when collection_type = 'face-analysis'**\n\nConfiguration for face detection in videos. Optional - if not provided, default values will be used. This config will be ignored for other collection types.",
+            "description": "🎯 **Use ONLY when collection_type = 'face-analysis'**\n\nConfiguration for face detection in videos. Optional - if not provided, default values will be used. This config will be ignored for other collection types.",
             "properties": {
               "frame_extraction_config": {
                 "type": "object",
@@ -9136,7 +9136,7 @@
                 "properties": {
                   "url": {
                     "type": "string",
-                    "description": "The URL of the video to add to the collection. Supports URIs of files uploaded to Cloudglue Files endpoint, public YouTube video URLs, public TikTok video URLs, public Loom share URLs, public HTTP URLs, and files which have been granted access to Cloudglue via data connectors.\n\nNote that YouTube videos are currently limited to speech level understanding only. Public TikTok video URLs will be scraped and stored automatically \u2014 subject to charges. For files via our Data connectors, see our documentation on data connectors for setup information."
+                    "description": "The URL of the video to add to the collection. Supports URIs of files uploaded to Cloudglue Files endpoint, public YouTube video URLs, public TikTok video URLs, public Loom share URLs, public HTTP URLs, and files which have been granted access to Cloudglue via data connectors.\n\nNote that YouTube videos are currently limited to speech level understanding only. Public TikTok video URLs will be scraped and stored automatically — subject to charges. For files via our Data connectors, see our documentation on data connectors for setup information."
                   }
                 },
                 "required": ["url"]
@@ -9944,7 +9944,7 @@
             "required": ["url"],
             "properties": {
               "url": {
-                "description": "Input video URL. Supports URIs of files uploaded to Cloudglue Files endpoint, public YouTube video URLs, public TikTok video URLs, public Loom share URLs, public HTTP URLs, and files which have been granted access to Cloudglue via data connectors.\n\nNote that YouTube videos are currently limited to speech level understanding only. Public TikTok video URLs will be scraped and stored automatically \u2014 subject to charges. For files via our Data connectors, see our documentation on data connectors for setup information.",
+                "description": "Input video URL. Supports URIs of files uploaded to Cloudglue Files endpoint, public YouTube video URLs, public TikTok video URLs, public Loom share URLs, public HTTP URLs, and files which have been granted access to Cloudglue via data connectors.\n\nNote that YouTube videos are currently limited to speech level understanding only. Public TikTok video URLs will be scraped and stored automatically — subject to charges. For files via our Data connectors, see our documentation on data connectors for setup information.",
                 "type": "string"
               },
               "enable_summary": {
@@ -10258,7 +10258,7 @@
             "required": ["url"],
             "properties": {
               "url": {
-                "description": "Input media URL. Supports URIs of files uploaded to Cloudglue Files endpoint, public YouTube video URLs, public TikTok video URLs, public Loom share URLs, public HTTP URLs (including direct image URLs such as JPEG/PNG/WebP), and files which have been granted access to Cloudglue via data connectors.\n\nNote that YouTube videos are currently limited to speech level understanding only. Public TikTok video URLs will be scraped and stored automatically \u2014 subject to charges. For files via our Data connectors, see our documentation on data connectors for setup information.",
+                "description": "Input media URL. Supports URIs of files uploaded to Cloudglue Files endpoint, public YouTube video URLs, public TikTok video URLs, public Loom share URLs, public HTTP URLs (including direct image URLs such as JPEG/PNG/WebP), and files which have been granted access to Cloudglue via data connectors.\n\nNote that YouTube videos are currently limited to speech level understanding only. Public TikTok video URLs will be scraped and stored automatically — subject to charges. For files via our Data connectors, see our documentation on data connectors for setup information.",
                 "type": "string"
               },
               "enable_summary": {
@@ -10932,7 +10932,7 @@
               }
             },
             "additionalProperties": true,
-            "description": "Provider-specific metadata. Folder entries expose the navigation key to pass back on the next request."
+            "description": "Provider-specific metadata. Folder entries expose the navigation key to pass back on the next request. File entries from Grain, Zoom, Recall, Google Drive, Dropbox, and Gong carry the provider's SourceMetadata shape (see the SourceMetadata schema) — the same provenance that lands on the file's `source_metadata` after syncing, so you can inspect participants, hosts, durations, AI summaries, etc. while browsing. S3/GCS file entries carry an empty object. Some fields are only captured at sync time (Dropbox media_info, Gong AI content)."
           }
         },
         "required": [
@@ -11367,7 +11367,7 @@
           "threshold": {
             "type": "number",
             "nullable": true,
-            "description": "Detection sensitivity threshold - lower values create more segments:\n\n\u2022 **content**: Sensitivity to visual differences (default: 27.0). Lower values detect smaller changes in color/lighting.\n\u2022 **adaptive**: Does not support threshold parameter - uses internal adaptive algorithm."
+            "description": "Detection sensitivity threshold - lower values create more segments:\n\n• **content**: Sensitivity to visual differences (default: 27.0). Lower values detect smaller changes in color/lighting.\n• **adaptive**: Does not support threshold parameter - uses internal adaptive algorithm."
           },
           "min_seconds": {
             "type": "number",
@@ -11386,7 +11386,7 @@
           "detector": {
             "type": "string",
             "enum": ["adaptive", "content"],
-            "description": "The detector strategy to use:\n\n\u2022 **adaptive**: Designed for dynamic footage with camera movement, panning, or action. Examples: sports broadcasts, drone footage, handheld documentaries, action movies, live events.\n\u2022 **content**: Optimized for controlled footage with clear visual transitions. Examples: studio interviews, corporate videos, educational content, product demos, scripted content."
+            "description": "The detector strategy to use:\n\n• **adaptive**: Designed for dynamic footage with camera movement, panning, or action. Examples: sports broadcasts, drone footage, handheld documentaries, action movies, live events.\n• **content**: Optimized for controlled footage with clear visual transitions. Examples: studio interviews, corporate videos, educational content, product demos, scripted content."
           },
           "fill_gaps": {
             "type": "boolean",
@@ -11438,7 +11438,7 @@
       },
       "SegmentationConfig": {
         "type": "object",
-        "description": "Configuration for video segmentation. **Choose a strategy and provide ONLY the corresponding config:**\n\n\u2022 **uniform**: Provide `uniform_config`, do NOT provide other configs\n\u2022 **shot-detector**: Provide `shot_detector_config`, do NOT provide other configs\n\u2022 **manual**: Provide `manual_config`, do NOT provide other configs\n\u2022 **narrative**: Provide `narrative_config`, do NOT provide other configs\n\nOptionally specify `start_time_seconds` and `end_time_seconds` to limit segmentation to a portion of the video.",
+        "description": "Configuration for video segmentation. **Choose a strategy and provide ONLY the corresponding config:**\n\n• **uniform**: Provide `uniform_config`, do NOT provide other configs\n• **shot-detector**: Provide `shot_detector_config`, do NOT provide other configs\n• **manual**: Provide `manual_config`, do NOT provide other configs\n• **narrative**: Provide `narrative_config`, do NOT provide other configs\n\nOptionally specify `start_time_seconds` and `end_time_seconds` to limit segmentation to a portion of the video.",
         "required": ["strategy"],
         "properties": {
           "strategy": {
@@ -11448,19 +11448,19 @@
           },
           "uniform_config": {
             "$ref": "#/components/schemas/SegmentationUniformConfig",
-            "description": "\ud83c\udfaf **REQUIRED when strategy = 'uniform'** - Configuration for uniform segmentation."
+            "description": "🎯 **REQUIRED when strategy = 'uniform'** - Configuration for uniform segmentation."
           },
           "shot_detector_config": {
             "$ref": "#/components/schemas/SegmentationShotDetectorConfig",
-            "description": "\ud83c\udfaf **REQUIRED when strategy = 'shot-detector'** - Configuration for shot detection segmentation."
+            "description": "🎯 **REQUIRED when strategy = 'shot-detector'** - Configuration for shot detection segmentation."
           },
           "manual_config": {
             "$ref": "#/components/schemas/SegmentationManualConfig",
-            "description": "\ud83c\udfaf **REQUIRED when strategy = 'manual'** - Configuration for manual segmentation."
+            "description": "🎯 **REQUIRED when strategy = 'manual'** - Configuration for manual segmentation."
           },
           "narrative_config": {
             "$ref": "#/components/schemas/NarrativeConfig",
-            "description": "\ud83c\udfaf **REQUIRED when strategy = 'narrative'** - Configuration for narrative-based chapter segmentation using AI analysis."
+            "description": "🎯 **REQUIRED when strategy = 'narrative'** - Configuration for narrative-based chapter segmentation using AI analysis."
           },
           "keyframe_config": {
             "$ref": "#/components/schemas/KeyframeConfig",
@@ -11480,7 +11480,7 @@
       },
       "DefaultSegmentationConfig": {
         "type": "object",
-        "description": "Configuration for video segmentation. **Choose a strategy and provide ONLY the corresponding config:**\n\n\u2022 **uniform**: Provide `uniform_config`, do NOT provide other configs\n\u2022 **shot-detector**: Provide `shot_detector_config`, do NOT provide other configs\n\u2022 **narrative**: Provide `narrative_config`, do NOT provide other configs\n\nOptionally specify `start_time_seconds` and `end_time_seconds` to limit segmentation to a portion of the video.",
+        "description": "Configuration for video segmentation. **Choose a strategy and provide ONLY the corresponding config:**\n\n• **uniform**: Provide `uniform_config`, do NOT provide other configs\n• **shot-detector**: Provide `shot_detector_config`, do NOT provide other configs\n• **narrative**: Provide `narrative_config`, do NOT provide other configs\n\nOptionally specify `start_time_seconds` and `end_time_seconds` to limit segmentation to a portion of the video.",
         "required": ["strategy"],
         "properties": {
           "strategy": {
@@ -11490,15 +11490,15 @@
           },
           "uniform_config": {
             "$ref": "#/components/schemas/SegmentationUniformConfig",
-            "description": "\ud83c\udfaf **REQUIRED when strategy = 'uniform'** - Configuration for uniform segmentation."
+            "description": "🎯 **REQUIRED when strategy = 'uniform'** - Configuration for uniform segmentation."
           },
           "shot_detector_config": {
             "$ref": "#/components/schemas/SegmentationShotDetectorConfig",
-            "description": "\ud83c\udfaf **REQUIRED when strategy = 'shot-detector'** - Configuration for shot detection segmentation."
+            "description": "🎯 **REQUIRED when strategy = 'shot-detector'** - Configuration for shot detection segmentation."
           },
           "narrative_config": {
             "$ref": "#/components/schemas/NarrativeConfig",
-            "description": "\ud83c\udfaf **REQUIRED when strategy = 'narrative'** - Configuration for narrative-based chapter segmentation using AI analysis."
+            "description": "🎯 **REQUIRED when strategy = 'narrative'** - Configuration for narrative-based chapter segmentation using AI analysis."
           },
           "keyframe_config": {
             "$ref": "#/components/schemas/KeyframeConfig",
@@ -12714,12 +12714,12 @@
         "properties": {
           "url": {
             "type": "string",
-            "description": "Input video or audio file URL. Supports URIs of files uploaded to Cloudglue Files endpoint, public HTTP URLs, YouTube URLs (narrative criteria only), public TikTok video URLs, public Loom share URLs, and files which have been granted access to Cloudglue via data connectors.\n\n**\u26a0\ufe0f Important: YouTube URLs and audio files are ONLY supported for narrative-based segmentation.** Shot-based segmentation requires direct video file access and does not support YouTube URLs or audio files. For YouTube URLs and audio files with narrative segmentation, only the 'balanced' and 'transcript' strategies are accepted; the 'comprehensive' strategy will be rejected with an error. Public TikTok video URLs will be scraped and stored automatically \u2014 subject to charges. For files via our Data connectors, see our documentation on data connectors for setup information."
+            "description": "Input video or audio file URL. Supports URIs of files uploaded to Cloudglue Files endpoint, public HTTP URLs, YouTube URLs (narrative criteria only), public TikTok video URLs, public Loom share URLs, and files which have been granted access to Cloudglue via data connectors.\n\n**⚠️ Important: YouTube URLs and audio files are ONLY supported for narrative-based segmentation.** Shot-based segmentation requires direct video file access and does not support YouTube URLs or audio files. For YouTube URLs and audio files with narrative segmentation, only the 'balanced' and 'transcript' strategies are accepted; the 'comprehensive' strategy will be rejected with an error. Public TikTok video URLs will be scraped and stored automatically — subject to charges. For files via our Data connectors, see our documentation on data connectors for setup information."
           },
           "criteria": {
             "type": "string",
             "enum": ["shot", "narrative"],
-            "description": "Segmentation criteria:\n\u2022 **shot**: Detect scene changes and shot boundaries using computer vision (not supported for YouTube URLs or audio files)\n\u2022 **narrative**: Identify logical narrative segments and chapters using AI analysis (supports YouTube URLs and audio files)"
+            "description": "Segmentation criteria:\n• **shot**: Detect scene changes and shot boundaries using computer vision (not supported for YouTube URLs or audio files)\n• **narrative**: Identify logical narrative segments and chapters using AI analysis (supports YouTube URLs and audio files)"
           },
           "shot_config": {
             "$ref": "#/components/schemas/ShotConfig",
@@ -12737,7 +12737,7 @@
           "detector": {
             "type": "string",
             "enum": ["content", "adaptive"],
-            "description": "Detection algorithm:\n\u2022 **adaptive**: Designed for dynamic footage with camera movement and action (default)\n\u2022 **content**: Optimized for controlled footage with clear visual transitions"
+            "description": "Detection algorithm:\n• **adaptive**: Designed for dynamic footage with camera movement and action (default)\n• **content**: Optimized for controlled footage with clear visual transitions"
           },
           "max_duration_seconds": {
             "type": "number",
@@ -12767,7 +12767,7 @@
           "strategy": {
             "type": "string",
             "enum": ["comprehensive", "balanced", "transcript"],
-            "description": "Narrative segmentation strategy:\n\n\u2022 **comprehensive**: Uses a VLM to deeply analyze logical segments of video. Only available for video files (not YouTube or audio).\n\n\u2022 **balanced** (default): Balanced analysis approach using multiple modalities. Supports YouTube URLs and audio files.\n\n\u2022 **transcript**: Cheap and fast speech-transcript-based segmentation. Requires a transcript; returns an error for silent or visual-only content (use `balanced` instead, or `comprehensive` for non-YouTube/non-audio video files).\n\n**Note**: YouTube URLs and audio files only support the **balanced** and **transcript** strategies; **comprehensive** will be rejected with an error."
+            "description": "Narrative segmentation strategy:\n\n• **comprehensive**: Uses a VLM to deeply analyze logical segments of video. Only available for video files (not YouTube or audio).\n\n• **balanced** (default): Balanced analysis approach using multiple modalities. Supports YouTube URLs and audio files.\n\n• **transcript**: Cheap and fast speech-transcript-based segmentation. Requires a transcript; returns an error for silent or visual-only content (use `balanced` instead, or `comprehensive` for non-YouTube/non-audio video files).\n\n**Note**: YouTube URLs and audio files only support the **balanced** and **transcript** strategies; **comprehensive** will be rejected with an error."
           },
           "number_of_chapters": {
             "type": "integer",
@@ -14396,26 +14396,31 @@
           },
           "title": {
             "type": "string",
-            "description": "Recording title."
+            "description": "Recording title.",
+            "nullable": true
           },
           "start_datetime": {
             "type": "string",
             "format": "date-time",
-            "description": "UTC time Grain started the recording."
+            "description": "UTC time Grain started the recording.",
+            "nullable": true
           },
           "end_datetime": {
             "type": "string",
             "format": "date-time",
-            "description": "UTC time the recording ended."
+            "description": "UTC time the recording ended.",
+            "nullable": true
           },
           "duration_ms": {
             "type": "integer",
-            "description": "Recording duration in milliseconds."
+            "description": "Recording duration in milliseconds.",
+            "nullable": true
           },
           "media_type": {
             "type": "string",
             "enum": ["audio", "transcript", "video"],
-            "description": "Grain media type of the recording."
+            "description": "Grain media type of the recording.",
+            "nullable": true
           },
           "upstream_source": {
             "type": "string",
@@ -14429,11 +14434,13 @@
               "zoom",
               "other"
             ],
-            "description": "Platform Grain captured the recording from."
+            "description": "Platform Grain captured the recording from.",
+            "nullable": true
           },
           "grain_url": {
             "type": "string",
-            "description": "URL to the recording in Grain."
+            "description": "URL to the recording in Grain.",
+            "nullable": true
           },
           "thumbnail_url": {
             "type": "string",
@@ -14445,7 +14452,8 @@
             "items": {
               "type": "string"
             },
-            "description": "Tags applied to the recording."
+            "description": "Tags applied to the recording.",
+            "nullable": true
           },
           "teams": {
             "type": "array",
@@ -14460,7 +14468,8 @@
                 }
               }
             },
-            "description": "Teams the recording belongs to."
+            "description": "Teams the recording belongs to.",
+            "nullable": true
           },
           "meeting_type": {
             "type": "object",
@@ -14604,33 +14613,606 @@
             "description": "Related HubSpot company/deal ids (include-gated). Null when requested but empty."
           }
         },
-        "required": [
-          "source_type",
-          "grain_recording_id",
-          "title",
-          "start_datetime",
-          "end_datetime",
-          "duration_ms",
-          "media_type",
-          "upstream_source",
-          "grain_url",
-          "tags",
-          "teams"
-        ]
+        "required": ["source_type", "grain_recording_id"]
+      },
+      "ZoomSourceMetadata": {
+        "type": "object",
+        "description": "Source provenance captured from Zoom at ingest time. Signed download/play URLs, share URLs, and passcodes are never included.",
+        "properties": {
+          "source_type": {
+            "type": "string",
+            "enum": ["zoom"],
+            "description": "Discriminator identifying the upstream connector."
+          },
+          "zoom_meeting_uuid": {
+            "type": "string",
+            "description": "Zoom meeting instance UUID."
+          },
+          "zoom_meeting_id": {
+            "type": "integer",
+            "description": "Zoom numeric meeting id.",
+            "nullable": true
+          },
+          "topic": {
+            "type": "string",
+            "description": "Meeting topic (empty string when Zoom omits it).",
+            "nullable": true
+          },
+          "start_time": {
+            "type": "string",
+            "format": "date-time",
+            "description": "UTC time the meeting started.",
+            "nullable": true
+          },
+          "host_id": {
+            "type": "string",
+            "nullable": true,
+            "description": "Zoom host user id."
+          },
+          "host_email": {
+            "type": "string",
+            "nullable": true,
+            "description": "Host email. Nullable whenever Zoom omits it — both list and per-meeting endpoints may return null depending on account scopes."
+          },
+          "account_id": {
+            "type": "string",
+            "nullable": true,
+            "description": "Zoom account id."
+          },
+          "timezone": {
+            "type": "string",
+            "nullable": true,
+            "description": "Meeting timezone."
+          },
+          "duration_minutes": {
+            "type": "number",
+            "nullable": true,
+            "description": "Meeting duration in minutes (as reported by Zoom)."
+          },
+          "total_size": {
+            "type": "number",
+            "nullable": true,
+            "description": "Total size of all recording files in bytes."
+          },
+          "recording_count": {
+            "type": "number",
+            "nullable": true,
+            "description": "Number of recording files for the meeting."
+          },
+          "meeting_type": {
+            "type": "number",
+            "nullable": true,
+            "description": "Zoom's numeric meeting type."
+          },
+          "recording_files": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "nullable": true
+                },
+                "recording_type": {
+                  "type": "string",
+                  "nullable": true,
+                  "description": "e.g. shared_screen_with_speaker_view, audio_only."
+                },
+                "file_type": {
+                  "type": "string",
+                  "nullable": true
+                },
+                "file_extension": {
+                  "type": "string",
+                  "nullable": true
+                },
+                "file_size": {
+                  "type": "number",
+                  "nullable": true,
+                  "description": "File size in bytes."
+                },
+                "recording_start": {
+                  "type": "string",
+                  "nullable": true
+                },
+                "recording_end": {
+                  "type": "string",
+                  "nullable": true
+                },
+                "status": {
+                  "type": "string",
+                  "nullable": true
+                }
+              }
+            },
+            "description": "Structural facts about each recording file. Download/play URLs are excluded."
+          }
+        },
+        "required": ["source_type", "zoom_meeting_uuid"]
+      },
+      "RecallSourceMetadata": {
+        "type": "object",
+        "description": "Source provenance captured from Recall at ingest time. Artifact availability is exposed as booleans — signed artifact download URLs are never included.",
+        "properties": {
+          "source_type": {
+            "type": "string",
+            "enum": ["recall"],
+            "description": "Discriminator identifying the upstream connector."
+          },
+          "recall_recording_id": {
+            "type": "string",
+            "description": "Recall recording id."
+          },
+          "created_at": {
+            "type": "string",
+            "nullable": true,
+            "description": "UTC time the recording object was created."
+          },
+          "started_at": {
+            "type": "string",
+            "nullable": true,
+            "description": "UTC time recording started."
+          },
+          "completed_at": {
+            "type": "string",
+            "nullable": true,
+            "description": "UTC time recording completed."
+          },
+          "expires_at": {
+            "type": "string",
+            "nullable": true,
+            "description": "UTC time the recording expires upstream at Recall."
+          },
+          "status_code": {
+            "type": "string",
+            "nullable": true,
+            "description": "Recall status: done, processing, failed, or paused. Only done recordings can be synced."
+          },
+          "meeting_title": {
+            "type": "string",
+            "nullable": true,
+            "description": "Meeting title, when Recall's meeting metadata carries one."
+          },
+          "meeting_platform": {
+            "type": "string",
+            "nullable": true,
+            "description": "Meeting platform (e.g. zoom, google_meet), when available."
+          },
+          "has_transcript": {
+            "type": "boolean",
+            "description": "Whether a transcript artifact exists.",
+            "nullable": true
+          },
+          "has_audio": {
+            "type": "boolean",
+            "description": "Whether a separate audio artifact exists.",
+            "nullable": true
+          },
+          "has_participant_events": {
+            "type": "boolean",
+            "nullable": true,
+            "description": "Whether a participant-events artifact exists."
+          },
+          "bot_id": {
+            "type": "string",
+            "nullable": true,
+            "description": "Id of the bot that captured the recording."
+          },
+          "recall_metadata": {
+            "type": "object",
+            "nullable": true,
+            "additionalProperties": true,
+            "description": "Arbitrary caller-supplied metadata attached to the bot/recording in Recall."
+          }
+        },
+        "required": ["source_type", "recall_recording_id"]
+      },
+      "GoogleDriveSourceMetadata": {
+        "type": "object",
+        "description": "Source provenance captured from Google Drive at ingest time. Short-lived signed URLs (e.g. thumbnailLink) are never included.",
+        "properties": {
+          "source_type": {
+            "type": "string",
+            "enum": ["google-drive"],
+            "description": "Discriminator identifying the upstream connector."
+          },
+          "gdrive_file_id": {
+            "type": "string",
+            "description": "Drive file id."
+          },
+          "name": {
+            "type": "string",
+            "description": "File name.",
+            "nullable": true
+          },
+          "mime_type": {
+            "type": "string",
+            "nullable": true
+          },
+          "size_bytes": {
+            "type": "number",
+            "nullable": true
+          },
+          "created_time": {
+            "type": "string",
+            "nullable": true,
+            "description": "UTC time the file was created in Drive."
+          },
+          "modified_time": {
+            "type": "string",
+            "nullable": true,
+            "description": "UTC time the file was last modified."
+          },
+          "web_view_link": {
+            "type": "string",
+            "nullable": true,
+            "description": "Link to view the file in Drive (requires Drive access)."
+          },
+          "owners": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "type": "object",
+              "properties": {
+                "display_name": {
+                  "type": "string",
+                  "nullable": true
+                },
+                "email_address": {
+                  "type": "string",
+                  "nullable": true
+                }
+              }
+            },
+            "description": "File owners."
+          },
+          "last_modifying_user": {
+            "type": "object",
+            "nullable": true,
+            "properties": {
+              "display_name": {
+                "type": "string",
+                "nullable": true
+              },
+              "email_address": {
+                "type": "string",
+                "nullable": true
+              }
+            },
+            "description": "User who last modified the file."
+          },
+          "parents": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "type": "string"
+            },
+            "description": "Parent folder ids."
+          },
+          "shared": {
+            "type": "boolean",
+            "nullable": true,
+            "description": "Whether the file is shared."
+          },
+          "file_extension": {
+            "type": "string",
+            "nullable": true
+          },
+          "md5_checksum": {
+            "type": "string",
+            "nullable": true
+          },
+          "video_media_metadata": {
+            "type": "object",
+            "nullable": true,
+            "properties": {
+              "duration_millis": {
+                "type": "number",
+                "nullable": true,
+                "description": "Video duration in milliseconds."
+              },
+              "width": {
+                "type": "number",
+                "nullable": true
+              },
+              "height": {
+                "type": "number",
+                "nullable": true
+              }
+            },
+            "description": "Drive's video metadata, when Drive has processed the file."
+          }
+        },
+        "required": ["source_type", "gdrive_file_id"]
+      },
+      "DropboxSourceMetadata": {
+        "type": "object",
+        "description": "Source provenance captured from Dropbox at ingest time.",
+        "properties": {
+          "source_type": {
+            "type": "string",
+            "enum": ["dropbox"],
+            "description": "Discriminator identifying the upstream connector."
+          },
+          "dropbox_id": {
+            "type": "string",
+            "description": "Dropbox file id (id:… form)."
+          },
+          "name": {
+            "type": "string",
+            "description": "File name.",
+            "nullable": true
+          },
+          "path_lower": {
+            "type": "string",
+            "description": "Lowercased path of the file.",
+            "nullable": true
+          },
+          "path_display": {
+            "type": "string",
+            "nullable": true,
+            "description": "Display-cased path."
+          },
+          "size_bytes": {
+            "type": "number",
+            "nullable": true
+          },
+          "client_modified": {
+            "type": "string",
+            "nullable": true,
+            "description": "Modification time reported by the client that uploaded the file."
+          },
+          "server_modified": {
+            "type": "string",
+            "nullable": true,
+            "description": "Time the file was last modified on Dropbox."
+          },
+          "rev": {
+            "type": "string",
+            "nullable": true,
+            "description": "Dropbox revision id."
+          },
+          "content_hash": {
+            "type": "string",
+            "nullable": true,
+            "description": "Dropbox content hash."
+          },
+          "is_downloadable": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "media_info": {
+            "type": "object",
+            "nullable": true,
+            "properties": {
+              "duration_ms": {
+                "type": "number",
+                "nullable": true,
+                "description": "Media duration in milliseconds."
+              },
+              "width": {
+                "type": "number",
+                "nullable": true
+              },
+              "height": {
+                "type": "number",
+                "nullable": true
+              }
+            },
+            "description": "Media dimensions/duration. Only populated at sync/lookup time — Dropbox's list endpoint stopped returning media info in 2019, so items in the list endpoint carry null here."
+          }
+        },
+        "required": ["source_type", "dropbox_id"]
+      },
+      "GongSourceMetadata": {
+        "type": "object",
+        "description": "Source provenance captured from Gong at ingest time. Signed media URLs are never included. AI content fields (topics, trackers, brief, key_points) require Gong Call Spotlight entitlement and are only captured at sync/lookup time.",
+        "properties": {
+          "source_type": {
+            "type": "string",
+            "enum": ["gong"],
+            "description": "Discriminator identifying the upstream connector."
+          },
+          "gong_call_id": {
+            "type": "string",
+            "description": "Gong call id."
+          },
+          "title": {
+            "type": "string",
+            "description": "Call title (empty string when Gong omits it).",
+            "nullable": true
+          },
+          "started": {
+            "type": "string",
+            "nullable": true,
+            "description": "UTC time the call started."
+          },
+          "scheduled": {
+            "type": "string",
+            "nullable": true,
+            "description": "UTC time the call was scheduled for."
+          },
+          "duration": {
+            "type": "number",
+            "nullable": true,
+            "description": "Call duration in seconds."
+          },
+          "gong_url": {
+            "type": "string",
+            "nullable": true,
+            "description": "URL to the call in Gong."
+          },
+          "meeting_url": {
+            "type": "string",
+            "nullable": true,
+            "description": "URL of the underlying meeting."
+          },
+          "is_private": {
+            "type": "boolean",
+            "nullable": true,
+            "description": "Whether the call is private in Gong. Private calls cannot be listed or synced."
+          },
+          "purpose": {
+            "type": "string",
+            "nullable": true
+          },
+          "primary_user_id": {
+            "type": "string",
+            "nullable": true,
+            "description": "Gong user id of the call owner."
+          },
+          "direction": {
+            "type": "string",
+            "nullable": true,
+            "description": "Inbound, Outbound, Conference, or Unknown."
+          },
+          "system": {
+            "type": "string",
+            "nullable": true,
+            "description": "Telephony/meeting system the call was held on."
+          },
+          "scope": {
+            "type": "string",
+            "nullable": true,
+            "description": "Internal, External, or Unknown."
+          },
+          "language": {
+            "type": "string",
+            "nullable": true,
+            "description": "ISO-639-2B language code Gong detected."
+          },
+          "workspace_id": {
+            "type": "string",
+            "nullable": true,
+            "description": "Gong workspace id."
+          },
+          "call_media_type": {
+            "type": "string",
+            "nullable": true,
+            "description": "Gong's media indicator: Video or Audio."
+          },
+          "parties": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "nullable": true
+                },
+                "name": {
+                  "type": "string",
+                  "nullable": true
+                },
+                "email": {
+                  "type": "string",
+                  "nullable": true
+                },
+                "affiliation": {
+                  "type": "string",
+                  "nullable": true,
+                  "description": "Internal, External, or Unknown."
+                },
+                "speaker_id": {
+                  "type": "string",
+                  "nullable": true
+                },
+                "user_id": {
+                  "type": "string",
+                  "nullable": true
+                }
+              }
+            },
+            "description": "Call participants."
+          },
+          "topics": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "nullable": true
+                },
+                "duration": {
+                  "type": "number",
+                  "nullable": true,
+                  "description": "Seconds spent on the topic."
+                }
+              }
+            },
+            "description": "AI topics (Call Spotlight)."
+          },
+          "trackers": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "nullable": true
+                },
+                "count": {
+                  "type": "number",
+                  "nullable": true
+                }
+              }
+            },
+            "description": "Tracker keyword hit counts (Call Spotlight)."
+          },
+          "brief": {
+            "type": "string",
+            "nullable": true,
+            "description": "AI call brief (Call Spotlight)."
+          },
+          "key_points": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "type": "string"
+            },
+            "description": "AI key points (Call Spotlight)."
+          }
+        },
+        "required": ["source_type", "gong_call_id"]
       },
       "SourceMetadata": {
         "oneOf": [
           {
             "$ref": "#/components/schemas/GrainSourceMetadata"
+          },
+          {
+            "$ref": "#/components/schemas/ZoomSourceMetadata"
+          },
+          {
+            "$ref": "#/components/schemas/RecallSourceMetadata"
+          },
+          {
+            "$ref": "#/components/schemas/GoogleDriveSourceMetadata"
+          },
+          {
+            "$ref": "#/components/schemas/DropboxSourceMetadata"
+          },
+          {
+            "$ref": "#/components/schemas/GongSourceMetadata"
           }
         ],
         "discriminator": {
           "propertyName": "source_type",
           "mapping": {
-            "grain": "#/components/schemas/GrainSourceMetadata"
+            "grain": "#/components/schemas/GrainSourceMetadata",
+            "zoom": "#/components/schemas/ZoomSourceMetadata",
+            "recall": "#/components/schemas/RecallSourceMetadata",
+            "google-drive": "#/components/schemas/GoogleDriveSourceMetadata",
+            "dropbox": "#/components/schemas/DropboxSourceMetadata",
+            "gong": "#/components/schemas/GongSourceMetadata"
           }
         },
-        "description": "Per-source provenance captured from the upstream connector. Currently only Grain is populated."
+        "description": "Per-source provenance captured from the upstream connector, discriminated by source_type. Populated for Grain, Zoom, Recall, Google Drive, Dropbox, and Gong; files synced before a connector was upgraded carry null. S3/GCS files carry null (plain object stores have no richer metadata)."
       },
       "SourceMetadataResponse": {
         "type": "object",
