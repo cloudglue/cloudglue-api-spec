@@ -7,7 +7,7 @@
       "name": "Apache License 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0"
     },
-    "version": "0.7.9"
+    "version": "0.7.10"
   },
   "servers": [
     {
@@ -13816,7 +13816,7 @@
       },
       "ShareableAsset": {
         "type": "object",
-        "required": ["id", "file_id", "url", "created_at"],
+        "required": ["id", "file_id", "url", "link_preview", "created_at"],
         "properties": {
           "id": {
             "type": "string",
@@ -13849,6 +13849,11 @@
             "type": "string",
             "enum": ["public", "private"],
             "description": "The visibility of the shareable asset. 'public' assets are viewable by anyone with the link; 'private' assets are restricted to members of the owning account and stream via a signed, token-gated playback url."
+          },
+          "link_preview": {
+            "type": "string",
+            "enum": ["none", "full"],
+            "description": "Controls rich link-preview (Open Graph) metadata for unfurl bots on private shares. 'none' (default) emits no preview metadata; 'full' emits title, description, and thumbnail. Public shares always emit full metadata regardless of this value."
           },
           "preview_url": {
             "type": "string",
@@ -13923,6 +13928,12 @@
             "enum": ["public", "private"],
             "default": "public",
             "description": "Visibility of the shareable asset. Defaults to 'public'. 'private' restricts the share page to members of the owning account and serves a signed, token-gated stream. Cannot be changed after creation."
+          },
+          "link_preview": {
+            "type": "string",
+            "enum": ["none", "full"],
+            "default": "none",
+            "description": "Rich link-preview metadata for unfurl bots. Only affects private shares: 'none' (default) keeps today's no-preview behavior; 'full' emits title, description, and thumbnail Open Graph tags. Public shares always emit full metadata."
           }
         }
       },
@@ -13940,6 +13951,11 @@
           "metadata": {
             "type": "object",
             "description": "The metadata of the shareable asset"
+          },
+          "link_preview": {
+            "type": "string",
+            "enum": ["none", "full"],
+            "description": "Rich link-preview metadata for unfurl bots. Only affects private shares: 'none' keeps today's no-preview behavior; 'full' emits title, description, and thumbnail Open Graph tags. Public shares always emit full metadata."
           }
         }
       },
