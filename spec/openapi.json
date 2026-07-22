@@ -7,7 +7,7 @@
       "name": "Apache License 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0"
     },
-    "version": "0.7.10"
+    "version": "0.7.11"
   },
   "servers": [
     {
@@ -1081,6 +1081,58 @@
         }
       }
     },
+    "/files/{file_id}/sync": {
+      "post": {
+        "tags": ["Files"],
+        "summary": "Refresh a file's connector source metadata",
+        "operationId": "syncFileSourceMetadata",
+        "description": "Re-fetches the file's source_metadata live from its data connector (google-drive, dropbox, zoom, gong, recall, grain, or iconik) and updates the stored value. If the file belongs to any metadata collections, their search documents are re-indexed with the refreshed metadata. Works for both metadata-only files and fully ingested connector files. Free — no media is downloaded or processed.",
+        "parameters": [
+          {
+            "name": "file_id",
+            "in": "path",
+            "required": true,
+            "description": "The ID of the file to sync",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "File with refreshed source metadata",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/File"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "File has no connector URI, the source does not support metadata lookup, or the account has no connector of that type",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "File not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/files/{file_id}/segmentations": {
       "post": {
         "tags": ["Files"],
@@ -1962,7 +2014,8 @@
                 "media-descriptions",
                 "entities",
                 "rich-transcripts",
-                "face-analysis"
+                "face-analysis",
+                "metadata"
               ]
             }
           },
@@ -2695,6 +2748,16 @@
               "type": "boolean",
               "default": false
             }
+          },
+          {
+            "name": "include_metadata",
+            "in": "query",
+            "description": "Include the file's user-defined metadata and source metadata. In markdown these render as a `## Metadata` section; in JSON they populate `file.metadata` and `file.source_metadata`.",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
           }
         ],
         "responses": {
@@ -3026,6 +3089,16 @@
             "schema": {
               "$ref": "#/components/schemas/ModalitiesSchema"
             }
+          },
+          {
+            "name": "include_metadata",
+            "in": "query",
+            "description": "Include the file's user-defined metadata and source metadata. In markdown these render as a `## Metadata` section; in JSON they populate `file.metadata` and `file.source_metadata`.",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
           }
         ],
         "responses": {
@@ -3163,6 +3236,16 @@
             "required": false,
             "schema": {
               "$ref": "#/components/schemas/ModalitiesSchema"
+            }
+          },
+          {
+            "name": "include_metadata",
+            "in": "query",
+            "description": "Include the file's user-defined metadata and source metadata. In markdown these render as a `## Metadata` section; in JSON they populate `file.metadata` and `file.source_metadata`.",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
             }
           }
         ],
@@ -3304,6 +3387,16 @@
             "name": "include_shots",
             "in": "query",
             "description": "Include shot boundaries in the response (when segmentation strategy is 'shot-detector')",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          {
+            "name": "include_metadata",
+            "in": "query",
+            "description": "Include the file's user-defined metadata and source metadata. In markdown these render as a `## Metadata` section; in JSON they populate `file.metadata` and `file.source_metadata`.",
             "required": false,
             "schema": {
               "type": "boolean",
@@ -3675,6 +3768,16 @@
               "type": "string",
               "enum": ["json", "markdown"]
             }
+          },
+          {
+            "name": "include_metadata",
+            "in": "query",
+            "description": "Include the file's user-defined metadata and source metadata. In markdown these render as a `## Metadata` section; in JSON they populate `file.metadata` and `file.source_metadata`.",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
           }
         ],
         "responses": {
@@ -3735,6 +3838,16 @@
             "schema": {
               "type": "string",
               "enum": ["json", "markdown"]
+            }
+          },
+          {
+            "name": "include_metadata",
+            "in": "query",
+            "description": "Include the file's user-defined metadata and source metadata. In markdown these render as a `## Metadata` section; in JSON they populate `file.metadata` and `file.source_metadata`.",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
             }
           }
         ],
@@ -3938,6 +4051,16 @@
             "schema": {
               "$ref": "#/components/schemas/ModalitiesSchema"
             }
+          },
+          {
+            "name": "include_metadata",
+            "in": "query",
+            "description": "Include the file's user-defined metadata and source metadata. In markdown these render as a `## Metadata` section; in JSON they populate `file.metadata` and `file.source_metadata`.",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
           }
         ],
         "responses": {
@@ -4066,6 +4189,16 @@
             "name": "include_shots",
             "in": "query",
             "description": "Include shot boundaries in the response (when segmentation strategy is 'shot-detector')",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          {
+            "name": "include_metadata",
+            "in": "query",
+            "description": "Include the file's user-defined metadata and source metadata. In markdown these render as a `## Metadata` section; in JSON they populate `file.metadata` and `file.source_metadata`.",
             "required": false,
             "schema": {
               "type": "boolean",
@@ -4305,7 +4438,7 @@
           {
             "name": "from",
             "in": "query",
-            "description": "Start date for filtering (YYYY-MM-DD, inclusive UTC day bound). Native for Zoom and Gong (call start; both default to a 6-month lookback when omitted), Grain and Recall (recording start/created time), and Google Drive (createdTime); matched while listing for Dropbox (client_modified). Ignored for S3/GCS.",
+            "description": "Start date for filtering (YYYY-MM-DD, inclusive UTC day bound). Native for Zoom and Gong (call start; both default to a 6-month lookback when omitted), Grain and Recall (recording start/created time), iconik (asset date_created), and Google Drive (createdTime); matched while listing for Dropbox (client_modified). Ignored for S3/GCS.",
             "required": false,
             "schema": {
               "type": "string",
@@ -4361,7 +4494,7 @@
           {
             "name": "title_search",
             "in": "query",
-            "description": "Case-insensitive title filter. Native for Grain (title_search) and Google Drive (name contains); matched while listing for Zoom (topic), Gong (call title), and Dropbox (filename). Ignored for Recall (no title is available when listing) and S3/GCS.",
+            "description": "Case-insensitive title filter. Native for Grain (title_search), Google Drive (name contains), and iconik (full-text title search); matched while listing for Zoom (topic), Gong (call title), and Dropbox (filename). Ignored for Recall (no title is available when listing) and S3/GCS.",
             "required": false,
             "schema": {
               "type": "string"
@@ -4467,7 +4600,7 @@
                 "properties": {
                   "url": {
                     "type": "string",
-                    "description": "Connector URI to sync. Must match the connector's type. Accepted forms per connector — s3: `s3://<bucket>/<key>` · gcs: `gs://<bucket>/<key>` · google-drive: `gdrive://file/<fileId>` or a `https://drive.google.com/file/d/<fileId>/...` link · dropbox: `dropbox://<path>` (as returned by GET /data-connectors/{id}/files) or a `https://www.dropbox.com/scl/fi/...` share link · zoom: `zoom://uuid/<meetingUuid>`, `zoom://id/<meetingId>`, or a `https://*.zoom.us` join, recording-detail, or rec/share link · grain: `grain://recording/<id>` · gong: `gong://call/<id>` · recall: `recall://recording/<id>`.",
+                    "description": "Connector URI to sync. Must match the connector's type. Accepted forms per connector — s3: `s3://<bucket>/<key>` · gcs: `gs://<bucket>/<key>` · google-drive: `gdrive://file/<fileId>` or a `https://drive.google.com/file/d/<fileId>/...` link · dropbox: `dropbox://<path>` (as returned by GET /data-connectors/{id}/files) or a `https://www.dropbox.com/scl/fi/...` share link · zoom: `zoom://uuid/<meetingUuid>`, `zoom://id/<meetingId>`, or a `https://*.zoom.us` join, recording-detail, or rec/share link · grain: `grain://recording/<id>` · gong: `gong://call/<id>` · recall: `recall://recording/<id>` · iconik: `iconik://asset/<id>`.",
                     "example": "grain://recording/abc123"
                   }
                 },
@@ -6623,6 +6756,16 @@
               "type": "integer",
               "minimum": 0
             }
+          },
+          {
+            "name": "include_metadata",
+            "in": "query",
+            "description": "Include the file's user-defined metadata and source metadata. In markdown these render as a `## Metadata` section; in JSON they populate `file.metadata` and `file.source_metadata`.",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
           }
         ],
         "responses": {
@@ -7593,7 +7736,7 @@
             "type": "string",
             "minLength": 1,
             "example": "nimbus-001",
-            "description": "The model to use for generating the response.\n\n- `nimbus-001`: Fast general question answering model. Requires `knowledge_base`. Default temperature: 0.7.\n- `nimbus-002-preview`: Light reasoning model capable of multi-step reasoning, cross-video synthesis, and structured entity data. Requires `knowledge_base`. Supports `entity_collections` in the knowledge base. Default temperature: 1."
+            "description": "The model to use for generating the response.\n\n- `nimbus-001`: Fast general question answering model. Requires `knowledge_base`. Default temperature: 0.7.\n- `nimbus-002-preview`: Light reasoning model capable of multi-step reasoning, cross-video synthesis, and structured entity data. Requires `knowledge_base`. Supports `entity_collections` in the knowledge base. Default temperature: 1.\n\nMetadata collections (`collection_type: 'metadata'`) in the knowledge base are only supported by `nimbus-002-preview` — its agent retrieves them at file granularity; `nimbus-001` rejects them (400)."
           },
           "input": {
             "oneOf": [
@@ -8632,7 +8775,8 @@
               "recall",
               "gcs",
               "grain",
-              "loom"
+              "loom",
+              "iconik"
             ],
             "description": "Source of the file"
           },
@@ -8752,7 +8896,8 @@
               "media-descriptions",
               "entities",
               "rich-transcripts",
-              "face-analysis"
+              "face-analysis",
+              "metadata"
             ],
             "description": "Type of collection, determines how videos are processed and what data is extracted"
           },
@@ -8926,9 +9071,10 @@
               "media-descriptions",
               "entities",
               "rich-transcripts",
-              "face-analysis"
+              "face-analysis",
+              "metadata"
             ],
-            "description": "Type of collection, determines how videos are processed and what data is extracted.\n\n**Collection Types:**\n- **media-descriptions**: Generate comprehensive media descriptions with speech, visual, and text analysis (use `describe_config`)\n- **entities**: Extract structured data/entities from videos (requires `extract_config`)\n- **rich-transcripts**: Generate rich transcriptions with speech and visual descriptions (use `transcribe_config`). For backward compatibility only, new collections should use `media-descriptions` instead.\n- **face-analysis**: Detect and index faces in videos for face matching and search (use `face_detection_config`)\n\n⚠️ **Important**: Only provide the config that matches your collection_type. Other configs will be ignored."
+            "description": "Type of collection, determines how videos are processed and what data is extracted.\n\n**Collection Types:**\n- **media-descriptions**: Generate comprehensive media descriptions with speech, visual, and text analysis (use `describe_config`)\n- **entities**: Extract structured data/entities from videos (requires `extract_config`)\n- **rich-transcripts**: Generate rich transcriptions with speech and visual descriptions (use `transcribe_config`). For backward compatibility only, new collections should use `media-descriptions` instead.\n- **face-analysis**: Detect and index faces in videos for face matching and search (use `face_detection_config`)\n- **metadata**: Index connector source metadata + user metadata into file-level search documents WITHOUT downloading or processing the media. Free to index. Supports google-drive, dropbox, zoom, gong, recall, grain, and iconik URLs. No processing configs are accepted.\n\n⚠️ **Important**: Only provide the config that matches your collection_type. Other configs will be ignored."
           },
           "name": {
             "type": "string",
@@ -9151,6 +9297,10 @@
             "properties": {
               "thumbnails_config": {
                 "$ref": "#/components/schemas/ThumbnailsConfig"
+              },
+              "metadata": {
+                "type": "object",
+                "description": "User metadata stored on the file (merged into the file's metadata and included in the indexed metadata doc). Only supported when adding to metadata collections; other collection types take metadata via the Files endpoints."
               }
             }
           }
@@ -9934,6 +10084,14 @@
           "error": {
             "type": "string",
             "description": "Error message if status is 'failed'"
+          },
+          "file": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/File"
+              }
+            ],
+            "description": "The file this document describes. `metadata` and `source_metadata` are only included when `include_metadata` is true."
           }
         }
       },
@@ -9969,6 +10127,11 @@
               },
               "thumbnails_config": {
                 "$ref": "#/components/schemas/ThumbnailsConfig"
+              },
+              "include_metadata": {
+                "type": "boolean",
+                "default": false,
+                "description": "Include the file's user-defined metadata and source metadata on the returned `file` object."
               }
             }
           },
@@ -10316,6 +10479,11 @@
                     }
                   }
                 }
+              },
+              "include_metadata": {
+                "type": "boolean",
+                "default": false,
+                "description": "Include the file's user-defined metadata and source metadata on the returned `file` object."
               }
             }
           },
@@ -10526,6 +10694,14 @@
             "type": "integer",
             "minimum": 0,
             "description": "Total number of shots (only present when include_shots=true and segmentation strategy is 'shot-detector')"
+          },
+          "file": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/File"
+              }
+            ],
+            "description": "The file this document describes. `metadata` and `source_metadata` are only included when `include_metadata` is true."
           }
         }
       },
@@ -10680,6 +10856,14 @@
                 "type": "integer",
                 "minimum": 0,
                 "description": "Total number of shots (only present when include_shots=true and segmentation strategy is 'shot-detector')"
+              },
+              "file": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/File"
+                  }
+                ],
+                "description": "The file this document describes. `metadata` and `source_metadata` are only included when `include_metadata` is true."
               }
             }
           },
@@ -10742,6 +10926,14 @@
                     }
                   }
                 }
+              },
+              "file": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/File"
+                  }
+                ],
+                "description": "The file this document describes. `metadata` and `source_metadata` are only included when `include_metadata` is true."
               }
             }
           },
@@ -10822,7 +11014,8 @@
               "gong",
               "recall",
               "gcs",
-              "grain"
+              "grain",
+              "iconik"
             ],
             "description": "The type of data connector"
           },
@@ -11222,6 +11415,14 @@
                       "$ref": "#/components/schemas/DescribeOutput"
                     }
                   ]
+                },
+                "file": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/File"
+                    }
+                  ],
+                  "description": "The file this document describes. `metadata` and `source_metadata` are only included when `include_metadata` is true."
                 }
               },
               "required": ["file_id", "data"]
@@ -11321,6 +11522,14 @@
                       "$ref": "#/components/schemas/DescribeOutput"
                     }
                   ]
+                },
+                "file": {
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/File"
+                    }
+                  ],
+                  "description": "The file this document describes. `metadata` and `source_metadata` are only included when `include_metadata` is true."
                 }
               },
               "required": ["file_id", "data", "added_at", "object"]
@@ -12094,6 +12303,13 @@
                   }
                 }
               ]
+            }
+          },
+          "source_metadata": {
+            "type": "array",
+            "description": "Filter by connector-provided source metadata using JSON path expressions (file scope only). Available fields depend on the file's source. Examples: source_metadata.topic (zoom), source_metadata.host_email (zoom), source_metadata.title (gong/grain/iconik), source_metadata.participants.name (grain), source_metadata.parties.email (gong), source_metadata.tags (grain, use ContainsAny), source_metadata.meeting_platform (recall), source_metadata.name (google-drive/dropbox), source_metadata.media_type (iconik), source_metadata.iconik_metadata.<FieldName> (iconik custom metadata-view fields, e.g. source_metadata.iconik_metadata.Keywords with ContainsAny). Paths through arrays of objects match when ANY element matches. ISO datetime fields (zoom start_time, gong started, grain start_datetime, recall started_at, iconik date_created) compare as strings with LessThan/GreaterThan and represent the actual meeting date (or, for iconik, the asset creation date).",
+            "items": {
+              "$ref": "#/components/schemas/SearchFilterCriteria"
             }
           }
         }
@@ -13340,11 +13556,12 @@
             "speech_lexical",
             "ocr_lexical",
             "tag_semantic",
-            "tag_lexical"
+            "tag_lexical",
+            "doc_lexical"
           ]
         },
         "maxItems": 5,
-        "description": "Specifies the type(s) of search to execute. When multiple modalities are specified, a hybrid search is executed that combines results from each modality.\n\nAvailable modalities:\n- `general_content`: baseline for matching the content of the search item (file/segment) based on visual or spoken content similarity to provided short natural language query string\n- `speech_lexical`: performs keyword based search (e.g. query of `president` matching `president` or `presidential` strings) and exact match (e.g. specifically find mentions of `\"Barack Obama\"` or `\"Donald Trump\"`) against speech content present in search item\n- `ocr_lexical`: performs keyword based search and exact match against screen text content present in search item\n- `tag_semantic`: performs basic word semantic similarity search against tag values associated with search items (e.g. `query=animal` expected to match tags with value containing `dog` or `cat`)\n- `tag_lexical`: performs keyword based search and exact match against tag values associated with search items\n\nOnly applicable when search `scope=file` or `scope=segment`.\n"
+        "description": "Specifies the type(s) of search to execute. When multiple modalities are specified, a hybrid search is executed that combines results from each modality.\n\nAvailable modalities:\n- `general_content`: baseline for matching the content of the search item (file/segment) based on visual or spoken content similarity to provided short natural language query string\n- `speech_lexical`: performs keyword based search (e.g. query of `president` matching `president` or `presidential` strings) and exact match (e.g. specifically find mentions of `\"Barack Obama\"` or `\"Donald Trump\"`) against speech content present in search item\n- `ocr_lexical`: performs keyword based search and exact match against screen text content present in search item\n- `tag_semantic`: performs basic word semantic similarity search against tag values associated with search items (e.g. `query=animal` expected to match tags with value containing `dog` or `cat`)\n- `tag_lexical`: performs keyword based search and exact match against tag values associated with search items\n- `doc_lexical`: performs keyword based search and exact match against file-level documents (metadata-collection docs and generated summaries). Only applicable when search `scope=file`.\n\nOnly applicable when search `scope=file` or `scope=segment`.\n"
       },
       "ThumbnailType": {
         "type": "string",
@@ -14002,7 +14219,7 @@
             "type": "string",
             "enum": ["segment", "file"],
             "default": "segment",
-            "description": "The scope of results to return. 'segment' returns individual segments, 'file' returns file-level results."
+            "description": "The scope of results to return. 'segment' returns individual segments, 'file' returns file-level results. When the knowledge base contains any metadata collections, scope must be 'file' (metadata collections only index file-level documents)."
           },
           "limit": {
             "type": "integer",
@@ -15215,6 +15432,9 @@
           },
           {
             "$ref": "#/components/schemas/GongSourceMetadata"
+          },
+          {
+            "$ref": "#/components/schemas/IconikSourceMetadata"
           }
         ],
         "discriminator": {
@@ -15225,10 +15445,11 @@
             "recall": "#/components/schemas/RecallSourceMetadata",
             "google-drive": "#/components/schemas/GoogleDriveSourceMetadata",
             "dropbox": "#/components/schemas/DropboxSourceMetadata",
-            "gong": "#/components/schemas/GongSourceMetadata"
+            "gong": "#/components/schemas/GongSourceMetadata",
+            "iconik": "#/components/schemas/IconikSourceMetadata"
           }
         },
-        "description": "Per-source provenance captured from the upstream connector, discriminated by source_type. Populated for Grain, Zoom, Recall, Google Drive, Dropbox, and Gong; files synced before a connector was upgraded carry null. S3/GCS files carry null (plain object stores have no richer metadata)."
+        "description": "Per-source provenance captured from the upstream connector, discriminated by source_type. Populated for Grain, Zoom, Recall, Google Drive, Dropbox, Gong, and iconik; files synced before a connector was upgraded carry null. S3/GCS files carry null (plain object stores have no richer metadata)."
       },
       "SourceMetadataResponse": {
         "type": "object",
@@ -15242,6 +15463,74 @@
           }
         },
         "required": ["object", "source_metadata"]
+      },
+      "IconikSourceMetadata": {
+        "type": "object",
+        "description": "Source provenance captured from iconik at ingest time. Signed download URLs are never included.",
+        "properties": {
+          "source_type": {
+            "type": "string",
+            "enum": ["iconik"],
+            "description": "Discriminator identifying the upstream connector."
+          },
+          "iconik_asset_id": {
+            "type": "string",
+            "description": "iconik asset id."
+          },
+          "title": {
+            "type": "string",
+            "nullable": true,
+            "description": "Asset title."
+          },
+          "media_type": {
+            "type": "string",
+            "nullable": true,
+            "description": "iconik media type of the asset (e.g. video, audio)."
+          },
+          "date_created": {
+            "type": "string",
+            "nullable": true,
+            "description": "UTC time the asset was created in iconik."
+          },
+          "date_modified": {
+            "type": "string",
+            "nullable": true,
+            "description": "UTC time the asset was last modified in iconik."
+          },
+          "duration_ms": {
+            "type": "number",
+            "nullable": true,
+            "description": "Asset duration in milliseconds, when iconik reports one."
+          },
+          "ingested_rendition": {
+            "type": "string",
+            "enum": ["proxy", "original"],
+            "nullable": true,
+            "description": "Which rendition Cloudglue downloaded: the web proxy (preferred) or the ORIGINAL file."
+          },
+          "iconik_url": {
+            "type": "string",
+            "nullable": true,
+            "description": "Deep link to the asset page in iconik."
+          },
+          "external_id": {
+            "type": "string",
+            "nullable": true,
+            "description": "External reference id set on the asset in iconik."
+          },
+          "created_by_user": {
+            "type": "string",
+            "nullable": true,
+            "description": "iconik user id that created the asset."
+          },
+          "iconik_metadata": {
+            "type": "object",
+            "nullable": true,
+            "additionalProperties": true,
+            "description": "Custom metadata-view field values from iconik (customer-defined schemas, e.g. a screening view's UGC Title / Keywords / Categories), captured verbatim keyed by field name. Indexed into metadata-collection search documents and filterable via source_metadata.iconik_metadata.<FieldName> paths."
+          }
+        },
+        "required": ["source_type", "iconik_asset_id"]
       }
     },
     "securitySchemes": {
