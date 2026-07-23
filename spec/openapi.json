@@ -7,7 +7,7 @@
       "name": "Apache License 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0"
     },
-    "version": "0.7.11"
+    "version": "0.7.12"
   },
   "servers": [
     {
@@ -8431,6 +8431,10 @@
               "enable_transcript_mode": {
                 "type": "boolean",
                 "description": "When enabled, extract entities from transcript only (similar to YouTube path). Useful for speech-heavy content."
+              },
+              "enable_metadata_mode": {
+                "type": "boolean",
+                "description": "When enabled, extract entities from the file's metadata document (filename, file details, user metadata, and connector source metadata) instead of the media content. File-level entities only; flat 1 credit per file; works on metadata-only files without ingesting their media. Mutually exclusive with enable_transcript_mode."
               }
             }
           },
@@ -8613,6 +8617,10 @@
               "enable_transcript_mode": {
                 "type": "boolean",
                 "description": "When enabled, extract entities from transcript only (similar to YouTube path). Useful for speech-heavy content."
+              },
+              "enable_metadata_mode": {
+                "type": "boolean",
+                "description": "When enabled, extract entities from the file's metadata document (filename, file details, user metadata, and connector source metadata) instead of the media content. File-level entities only; flat 1 credit per file; works on metadata-only files without ingesting their media. Mutually exclusive with enable_transcript_mode."
               },
               "thumbnails_config": {
                 "$ref": "#/components/schemas/ThumbnailsConfig"
@@ -8924,6 +8932,10 @@
               "enable_transcript_mode": {
                 "type": "boolean",
                 "description": "When enabled, extract entities from transcript only. Useful for speech-heavy content."
+              },
+              "enable_metadata_mode": {
+                "type": "boolean",
+                "description": "When enabled, every file added to this entities collection is extracted from its metadata document (filename, file details, user metadata, and connector source metadata) instead of the media content. File-level entities only; flat 1 credit per file; metadata-only files are never ingested. Mutually exclusive with enable_transcript_mode."
               }
             }
           },
@@ -9134,6 +9146,10 @@
               "enable_transcript_mode": {
                 "type": "boolean",
                 "description": "When enabled, extract entities from transcript only. Useful for speech-heavy content."
+              },
+              "enable_metadata_mode": {
+                "type": "boolean",
+                "description": "When enabled, every file added to this entities collection is extracted from its metadata document (filename, file details, user metadata, and connector source metadata) instead of the media content. File-level entities only; flat 1 credit per file; metadata-only files are never ingested. Mutually exclusive with enable_transcript_mode."
               }
             }
           },
