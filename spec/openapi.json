@@ -7,7 +7,7 @@
       "name": "Apache License 2.0",
       "url": "https://www.apache.org/licenses/LICENSE-2.0"
     },
-    "version": "0.7.32"
+    "version": "0.7.33"
   },
   "servers": [
     {
@@ -58,8 +58,8 @@
               }
             }
           },
-          "404": {
-            "description": "File not found",
+          "403": {
+            "description": "Usage limit reached (total tags per file or segment) — `code: usage_limit_reached`",
             "content": {
               "application/json": {
                 "schema": {
@@ -68,8 +68,8 @@
               }
             }
           },
-          "429": {
-            "description": "Resource limits exceeded (total tags per file or segment)",
+          "404": {
+            "description": "File not found",
             "content": {
               "application/json": {
                 "schema": {
@@ -305,8 +305,8 @@
               }
             }
           },
-          "404": {
-            "description": "Extract job not found",
+          "403": {
+            "description": "Usage limit reached (monthly extract jobs, or the file limits when given a new URL) — `code: usage_limit_reached`",
             "content": {
               "application/json": {
                 "schema": {
@@ -315,8 +315,8 @@
               }
             }
           },
-          "429": {
-            "description": "Monthly extract jobs limit reached",
+          "404": {
+            "description": "Extract job not found",
             "content": {
               "application/json": {
                 "schema": {
@@ -440,16 +440,6 @@
           },
           "404": {
             "description": "Extract job not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          },
-          "429": {
-            "description": "Monthly extract jobs limit reached",
             "content": {
               "application/json": {
                 "schema": {
@@ -666,8 +656,8 @@
               }
             }
           },
-          "415": {
-            "description": "Unsupported file type",
+          "403": {
+            "description": "Usage limit reached (monthly uploads, total duration, total file size, or total files) — `code: usage_limit_reached`",
             "content": {
               "application/json": {
                 "schema": {
@@ -676,8 +666,8 @@
               }
             }
           },
-          "429": {
-            "description": "Resource limits exceeded (monthly upload limit, total duration, file size, or total files)",
+          "415": {
+            "description": "Unsupported file type",
             "content": {
               "application/json": {
                 "schema": {
@@ -879,7 +869,7 @@
             }
           },
           "403": {
-            "description": "The source file is not accessible (e.g. a login-gated, expired, or restricted share link)",
+            "description": "The source file is not accessible (e.g. a login-gated, expired, or restricted share link). Also returned when a usage limit is reached (monthly uploads, total duration, total file size, or total files) — `code: usage_limit_reached`",
             "content": {
               "application/json": {
                 "schema": {
@@ -900,16 +890,6 @@
           },
           "415": {
             "description": "The URL does not serve a supported video or audio content type",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          },
-          "429": {
-            "description": "Resource limits exceeded (monthly upload limit, total duration, file size, or total files)",
             "content": {
               "application/json": {
                 "schema": {
@@ -1926,8 +1906,8 @@
               }
             }
           },
-          "409": {
-            "description": "Collection name already exists for this account",
+          "403": {
+            "description": "Usage limit reached (total collections) — `code: usage_limit_reached`",
             "content": {
               "application/json": {
                 "schema": {
@@ -1936,8 +1916,8 @@
               }
             }
           },
-          "429": {
-            "description": "Resource limits exceeded (total collections or files per collection)",
+          "409": {
+            "description": "Collection name already exists for this account",
             "content": {
               "application/json": {
                 "schema": {
@@ -2276,6 +2256,16 @@
           },
           "400": {
             "description": "Invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Usage limit reached (files per collection, or the file limits when adding by URL) — `code: usage_limit_reached`",
             "content": {
               "application/json": {
                 "schema": {
@@ -3487,8 +3477,8 @@
               }
             }
           },
-          "404": {
-            "description": "Collections not found",
+          "403": {
+            "description": "Usage limit reached (monthly or daily chat completions) — `code: usage_limit_reached`",
             "content": {
               "application/json": {
                 "schema": {
@@ -3497,8 +3487,8 @@
               }
             }
           },
-          "429": {
-            "description": "Chat completion limits reached (monthly or daily)",
+          "404": {
+            "description": "Collections not found",
             "content": {
               "application/json": {
                 "schema": {
@@ -3658,8 +3648,8 @@
               }
             }
           },
-          "404": {
-            "description": "File not found",
+          "403": {
+            "description": "Usage limit reached (monthly describe jobs, or the file limits when given a new URL) — `code: usage_limit_reached`",
             "content": {
               "application/json": {
                 "schema": {
@@ -3668,8 +3658,8 @@
               }
             }
           },
-          "429": {
-            "description": "Chat completion limits reached (monthly or daily)",
+          "404": {
+            "description": "File not found",
             "content": {
               "application/json": {
                 "schema": {
@@ -3924,8 +3914,8 @@
               }
             }
           },
-          "404": {
-            "description": "File not found",
+          "403": {
+            "description": "Usage limit reached (monthly describe jobs, or the file limits when given a new URL) — `code: usage_limit_reached`",
             "content": {
               "application/json": {
                 "schema": {
@@ -3934,8 +3924,8 @@
               }
             }
           },
-          "429": {
-            "description": "Chat completion limits reached (monthly or daily)",
+          "404": {
+            "description": "File not found",
             "content": {
               "application/json": {
                 "schema": {
@@ -4642,7 +4632,7 @@
             }
           },
           "403": {
-            "description": "The source file is not accessible (e.g. a login-gated, expired, or restricted Dropbox share link)",
+            "description": "The source file is not accessible (e.g. a login-gated, expired, or restricted Dropbox share link). Also returned when a usage limit is reached (monthly uploads, total duration, total file size, or total files) — `code: usage_limit_reached`",
             "content": {
               "application/json": {
                 "schema": {
@@ -4869,6 +4859,16 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/Webhook"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Usage limit reached (total webhook endpoints) — `code: usage_limit_reached`",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
                 }
               }
             }
@@ -5288,6 +5288,16 @@
               }
             }
           },
+          "403": {
+            "description": "Usage limit reached (monthly or daily chat completions) — `code: usage_limit_reached`",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
           "404": {
             "description": "Collection not found",
             "content": {
@@ -5566,6 +5576,16 @@
           },
           "400": {
             "description": "Invalid request parameters",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Usage limit reached (monthly or daily chat completions) — `code: usage_limit_reached`",
             "content": {
               "application/json": {
                 "schema": {
@@ -6369,8 +6389,8 @@
               }
             }
           },
-          "404": {
-            "description": "File not found",
+          "403": {
+            "description": "Usage limit reached (monthly segments jobs, or the file limits when given a new URL) — `code: usage_limit_reached`",
             "content": {
               "application/json": {
                 "schema": {
@@ -6379,8 +6399,8 @@
               }
             }
           },
-          "429": {
-            "description": "Monthly segments jobs limit reached",
+          "404": {
+            "description": "File not found",
             "content": {
               "application/json": {
                 "schema": {
@@ -6851,8 +6871,8 @@
               }
             }
           },
-          "404": {
-            "description": "Target video file not found",
+          "403": {
+            "description": "Usage limit reached (monthly face match jobs, or the file limits when given a new URL) — `code: usage_limit_reached`",
             "content": {
               "application/json": {
                 "schema": {
@@ -6861,8 +6881,8 @@
               }
             }
           },
-          "429": {
-            "description": "Monthly face match jobs limit reached",
+          "404": {
+            "description": "Target video file not found",
             "content": {
               "application/json": {
                 "schema": {
@@ -7129,8 +7149,8 @@
               }
             }
           },
-          "404": {
-            "description": "Target video file not found",
+          "403": {
+            "description": "Usage limit reached (monthly face detection jobs, or the file limits when given a new URL) — `code: usage_limit_reached`",
             "content": {
               "application/json": {
                 "schema": {
@@ -7139,8 +7159,8 @@
               }
             }
           },
-          "429": {
-            "description": "Monthly face detection jobs limit reached",
+          "404": {
+            "description": "Target video file not found",
             "content": {
               "application/json": {
                 "schema": {
@@ -7394,6 +7414,16 @@
           },
           "400": {
             "description": "Invalid request parameters or configuration",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Usage limit reached (monthly shareable assets) — `code: usage_limit_reached`",
             "content": {
               "application/json": {
                 "schema": {
@@ -7726,6 +7756,16 @@
           },
           "400": {
             "description": "Invalid request (e.g., audio files with shot-detector segmentation, audio in face-analysis collections)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Usage limit reached (files per collection, or the file limits when adding by URL) — `code: usage_limit_reached`",
             "content": {
               "application/json": {
                 "schema": {
@@ -8094,6 +8134,16 @@
           },
           "400": {
             "description": "Invalid request — `include_thumbnails` or `enrich_metadata` was set on a media import (imported media gets real thumbnails from the processing pipeline, and a media run has no metadata-only record to enrich)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Usage limit reached (monthly metadata-import files) — `code: usage_limit_reached`",
             "content": {
               "application/json": {
                 "schema": {
@@ -8602,8 +8652,8 @@
               }
             }
           },
-          "404": {
-            "description": "File not found",
+          "403": {
+            "description": "Usage limit reached (monthly find-moments runs, or the file limits when given a new URL) — `code: usage_limit_reached`",
             "content": {
               "application/json": {
                 "schema": {
@@ -8612,8 +8662,8 @@
               }
             }
           },
-          "429": {
-            "description": "Monthly find-moments runs limit reached",
+          "404": {
+            "description": "File not found",
             "content": {
               "application/json": {
                 "schema": {
@@ -11470,6 +11520,11 @@
         "properties": {
           "error": {
             "type": "string"
+          },
+          "code": {
+            "type": "string",
+            "description": "Machine-readable error code, present on some errors. `usage_limit_reached` marks a 403 for an exhausted account usage limit (separate from credits): retrying will not succeed until the limit is raised or the period resets.",
+            "enum": ["usage_limit_reached"]
           }
         }
       },
