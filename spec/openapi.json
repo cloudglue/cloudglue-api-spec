@@ -11523,8 +11523,7 @@
           },
           "code": {
             "type": "string",
-            "description": "Machine-readable error code, present on some errors. `usage_limit_reached` marks a 403 for an exhausted account usage limit (separate from credits): retrying will not succeed until the limit is raised or the period resets.",
-            "enum": ["usage_limit_reached"]
+            "description": "Machine-readable error code, present on some errors. Known values: `usage_limit_reached` marks a 403 for an exhausted account usage limit (separate from credits); retrying will not succeed until the limit is raised or the period resets. More codes may be added, so treat unknown values as absent."
           }
         }
       },
